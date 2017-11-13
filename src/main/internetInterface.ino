@@ -3,6 +3,10 @@
 // In this file you will find methods to control the internet connection of the arduino
 // and to get data from the internet conveniantly.
 //
+// If you have trouble with the library files go to:
+// Sketch -> Include Library -> Manage Libraries
+// and look for the Arduino Http Client and install it.
+//
 // -----------------------------------------------------------------------------
 
 #include <ArduinoHttpClient.h>
