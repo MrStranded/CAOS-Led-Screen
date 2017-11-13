@@ -29,7 +29,7 @@ void writeChar(char c, int position) {
   char[] pixelData = getPixelsFromChar(c);
   for (int i=0; i<length(pixelData); i++) {
     if (i+position < 48) {
-      pixels[i+position] = pixelData[i];
+      pixels[i + position] = pixelData[length(pixelData) - i]; // the flip is because the definition in chars.ino is backwards
     }
   }
 }
