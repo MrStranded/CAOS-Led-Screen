@@ -4,6 +4,8 @@
 //
 // -----------------------------------------------------------------------------
 
+#include "chars.ino"
+
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
 // DO NOT access pixels[] outside of this file!
@@ -23,7 +25,13 @@ void initScreen() {
 // writes given char into specified position on screen
 
 void writeChar(char c, int position) {
-  // TODO
+  if (position < 0) { position = 0; }
+  char[] pixelData = getPixelsFromChar(c);
+  for (int i=0; i<length(pixelData); i++) {
+    if (i+position < 48) {
+      pixels[i+position] = pixelData[i];
+    }
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
