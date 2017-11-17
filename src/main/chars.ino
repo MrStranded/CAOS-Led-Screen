@@ -6,10 +6,12 @@
 
 // returns a char[5] array with the pixel data corresponding to the given char
 
-char[] getPixelsFromChar(char c) {
+char* getPixelsFromChar(char c) {
+  /*
+  static char[] c = {0,0,0,0,0};
   switch(c) {
     case 'a':
-    return {
+    c = {
       0b00000000,
       0b00111111,
       0b00010001,
@@ -17,7 +19,7 @@ char[] getPixelsFromChar(char c) {
       0b00001110
     };
     case 'b':
-    return {
+    c = {
       0b00000000,
       0b00001110,
       0b00010001,
@@ -25,7 +27,7 @@ char[] getPixelsFromChar(char c) {
       0b11111111
     };
     case 'c':
-    return {
+    c = {
       0b00000000,
       0b00010001,
       0b00010001,
@@ -33,7 +35,7 @@ char[] getPixelsFromChar(char c) {
       0b00001110
     };
     case 'd':
-    return {
+    c = {
       0b00000000,
       0b11111111,
       0b00010001,
@@ -41,7 +43,7 @@ char[] getPixelsFromChar(char c) {
       0b00001110
     };
     case 'e':
-    return {
+    c = {
       0b00000000,
       0b00001101,
       0b00010101,
@@ -49,7 +51,7 @@ char[] getPixelsFromChar(char c) {
       0b00001110
     };
     case 'f':
-    return {
+    c = {
       0b00000000,
       0b10000000,
       0b10010000,
@@ -57,7 +59,7 @@ char[] getPixelsFromChar(char c) {
       0b00010000
     };
     case 'g':
-    return {
+    c = {
       0b00000000,
       0b00011110,
       0b00100101,
@@ -65,7 +67,7 @@ char[] getPixelsFromChar(char c) {
       0b00011010
     };
     case 'h':
-    return {
+    c = {
       0b00000000,
       0b00001111,
       0b00010000,
@@ -73,7 +75,7 @@ char[] getPixelsFromChar(char c) {
       0b11111111
     };
     default:
-    return {
+    c = {
       0b00000000,
       0b00000000,
       0b00000000,
@@ -81,5 +83,8 @@ char[] getPixelsFromChar(char c) {
       0b00000000
     };
   }
+  return c;
+  */
+  return NULL;
 }
 

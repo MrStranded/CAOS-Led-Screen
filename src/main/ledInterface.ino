@@ -4,13 +4,11 @@
 //
 // -----------------------------------------------------------------------------
 
-#include "chars.ino"
-
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
 // DO NOT access pixels[] outside of this file!
 
-char[] pixels = new char[48];
+//char[] pixels = new char[48];
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -26,12 +24,13 @@ void initScreen() {
 
 void writeChar(char c, int position) {
   if (position < 0) { position = 0; }
-  char[] pixelData = getPixelsFromChar(c);
+  /*char[] pixelData = getPixelsFromChar(c);
   for (int i=0; i<length(pixelData); i++) {
     if (i+position < 48) {
       pixels[i + position] = pixelData[length(pixelData) - i]; // the flip is because the definition in chars.ino is backwards
     }
   }
+  */
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -51,7 +50,7 @@ void setPixel(int x,int y,int power) {
   pixelMask = pixelMask * power;
   
   // the pixelvalue copied at every bit where pixelMask is 1 and reset at the position where pixelMask is 0 by columnMask
-  pixels[x] = (pixels[x] & pixelMask) | columnMask;
+  //pixels[x] = (pixels[x] & pixelMask) | columnMask;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -63,7 +62,8 @@ int getPixel(int x,int y) {
   char mask = 1 << (y-1);
 
   // the & operator returns an int that is 0 everywhere, except in position y, where it has the value of the pixel
-  return pixels[x] & mask;
+  //return pixels[x] & mask;
+  return NULL;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -88,7 +88,7 @@ void setAll(int power) {
   if (power == 1) { c = 255; }
   
   for (int x=0; x<48; x++) {
-    pixels[x] = c;
+    //pixels[x] = c;
   }
 }
 
