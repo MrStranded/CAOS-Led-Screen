@@ -8,7 +8,7 @@
 // each char corresponds to a column of the screen
 // DO NOT access pixels[] outside of this file!
 
-//char[] pixels = new char[48];
+char pixels[48] = ""; // "" initializes the array with zeros
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -24,13 +24,12 @@ void initScreen() {
 
 void writeChar(char c, int position) {
   if (position < 0) { position = 0; }
-  /*char[] pixelData = getPixelsFromChar(c);
-  for (int i=0; i<length(pixelData); i++) {
+  char* pixelData = getPixelsFromChar(c);
+  for (int i=0; i<5; i++) {
     if (i+position < 48) {
-      pixels[i + position] = pixelData[length(pixelData) - i]; // the flip is because the definition in chars.ino is backwards
+      pixels[i + position] = pixelData[5 - i]; // the flip is because the definition in chars.ino is backwards
     }
   }
-  */
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -50,7 +49,7 @@ void setPixel(int x,int y,int power) {
   pixelMask = pixelMask * power;
   
   // the pixelvalue copied at every bit where pixelMask is 1 and reset at the position where pixelMask is 0 by columnMask
-  //pixels[x] = (pixels[x] & pixelMask) | columnMask;
+  pixels[x] = (pixels[x] & pixelMask) | columnMask;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -62,8 +61,7 @@ int getPixel(int x,int y) {
   char mask = 1 << (y-1);
 
   // the & operator returns an int that is 0 everywhere, except in position y, where it has the value of the pixel
-  //return pixels[x] & mask;
-  return NULL;
+  return pixels[x] & mask;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -88,8 +86,25 @@ void setAll(int power) {
   if (power == 1) { c = 255; }
   
   for (int x=0; x<48; x++) {
-    //pixels[x] = c;
+    pixels[x] = c;
   }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
+
+// used to debug the char array information
+
+void debugScreen() {
+  for (int y=0; y<8; y++) {
+    for (int x=0; x<48; x++) {
+      int power = getPixel(x,y);
+      if (power == 0) {
+        Serial.print(".");
+      } else {
+        Serial.print("x");
+      }
+    }
+    Serial.println("");
+  }
+}
+

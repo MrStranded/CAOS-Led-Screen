@@ -4,7 +4,7 @@
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("hallo velo.");
+  Serial.println("led screen output:");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -12,10 +12,14 @@ void setup() {
 // main loop of the program
 
 void loop() {
-  for (int i = 0; i< 20000; i++) {
-    Serial.print("Semira liebt Michael soooooooo fest ");
-    Serial.println(i);
-  }
+
+  initScreen();
+
+  writeChar('a',2);
+  writeChar('x',13);
+
+  debugScreen();
+
   // ending the programm
   while(1) {}
 }
