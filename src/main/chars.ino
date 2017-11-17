@@ -15,6 +15,7 @@ char* getPixelsFromChar(char cIn) {
       c[2] = 0b00010001;
       c[3] = 0b00010001;
       c[4] = 0b00001110;
+      break;
     /*
     case 'b':
     v{
@@ -79,6 +80,7 @@ char* getPixelsFromChar(char cIn) {
       c[2] = 0b10100001;
       c[3] = 0b01111001;
       c[4] = 0b00000110;
+      break;
   }
   return c;
 }

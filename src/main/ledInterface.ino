@@ -58,7 +58,7 @@ void setPixel(int x,int y,int power) {
 
 int getPixel(int x,int y) {
   // mask is 0 everywhere, except in position y
-  char mask = 1 << (y-1);
+  char mask = 1 << (y);
 
   // the & operator returns an int that is 0 everywhere, except in position y, where it has the value of the pixel
   return pixels[x] & mask;
