@@ -4,11 +4,16 @@
 //
 // -----------------------------------------------------------------------------
 
+// screenWidth remembers the width of the led screen
+// should normally be 48, but can differ for debbuging reasons
+
+const int screenWidth = 50;
+
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
 // DO NOT access pixels[] outside of this file!
 
-char pixels[48] = ""; // "" initializes the array with zeros
+char pixels[screenWidth] = ""; // "" initializes the array with zeros
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -26,9 +31,29 @@ void writeChar(char c, int position) {
   if (position < 0) { position = 0; }
   char* pixelData = getPixelsFromChar(c);
   for (int i=0; i<5; i++) {
-    if (i+position < 48) {
-      pixels[i + position] = pixelData[5 - i]; // the flip is because the definition in chars.ino is backwards
+    if (i+position < screenWidth) {
+      pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
     }
+  }
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// writes given char into specified slot. Every 5 columns represent one slot
+
+void writeCharIntoSlot(char c, int slot) {
+  writeChar(c,slot * 5);
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// writes text into the led screen, beginning from the left
+
+void writeText(char* text) {
+  int i = 0;
+  while (text[i] != 0) {
+    writeCharIntoSlot(text[i],i);
+    i++;
   }
 }
 
@@ -85,7 +110,7 @@ void setAll(int power) {
   // c = 1111 1111
   if (power == 1) { c = 255; }
   
-  for (int x=0; x<48; x++) {
+  for (int x=0; x<screenWidth; x++) {
     pixels[x] = c;
   }
 }
@@ -96,7 +121,7 @@ void setAll(int power) {
 
 void debugScreen() {
   for (int y=0; y<8; y++) {
-    for (int x=0; x<48; x++) {
+    for (int x=0; x<screenWidth; x++) {
       int power = getPixel(x,y);
       if (power == 0) {
         Serial.print(".");

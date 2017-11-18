@@ -15,8 +15,7 @@ void loop() {
 
   initScreen();
 
-  writeChar('a',2);
-  writeChar('x',13);
+  writeText("hallo welt");
 
   debugScreen();
 
