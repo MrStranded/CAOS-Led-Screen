@@ -15,7 +15,7 @@ void loop() {
 
   initScreen();
 
-  writeText("HALLO WELT");
+  writeText("0123456789");
 
   debugScreen();
 
