@@ -7,7 +7,12 @@
 // screenWidth remembers the width of the led screen
 // should normally be 48, but can differ for debbuging reasons
 
-const int screenWidth = 50;
+const int screenWidth = 60;
+
+// defines the width of the printed chars
+// does not affect the data from chars.ino, only the character distribution on the screen (default = 5)
+
+const int characterWidth = 6;
 
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
@@ -39,10 +44,10 @@ void writeChar(char c, int position) {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// writes given char into specified slot. Every 5 columns represent one slot
+// writes given char into specified slot. Every characterWidth columns represent one slot
 
 void writeCharIntoSlot(char c, int slot) {
-  writeChar(c,slot * 5);
+  writeChar(c,slot * characterWidth);
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
