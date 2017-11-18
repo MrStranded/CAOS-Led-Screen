@@ -20,7 +20,7 @@ char pixels[screenWidth] = ""; // "" initializes the array with zeros
 // initializes the screen
 
 void initScreen() {
-  clear();
+  clearScreen();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -54,6 +54,18 @@ void writeText(char* text) {
   while (text[i] != 0) {
     writeCharIntoSlot(text[i],i);
     i++;
+  }
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// puts the given data into the screen exactly as it is
+
+void putChars(char* data, int length) {
+  for (int i=0; i<length; i++) {
+    if (i < screenWidth) {
+      pixels[i] = data[i];
+    }
   }
 }
 
@@ -93,7 +105,7 @@ int getPixel(int x,int y) {
 
 // clears all the pixels on the screen
 
-void clear() {
+void clearScreen() {
   setAll(0);
 }
 
