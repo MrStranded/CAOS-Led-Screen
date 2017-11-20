@@ -9,14 +9,40 @@
 //
 // -----------------------------------------------------------------------------
 
-#include <ArduinoHttpClient.h>
+#include <Bridge.h>
+#include <HttpClient.h>
+
+// the client that connects to the internet
+
+HttpClient client;
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// set up bridge, pins and ethernet shield
+
+void initInternet() {
+  pinMode(ethernetPin, OUTPUT);
+  digitalWrite(ethernetPin, LOW);
+  Bridge.begin();
+}
 
 // %%%%%%%%%%%%%%%%%%%%%
 
 // create a connection to the given url
 
 void createConnection(String url) {
-  // TODO
+  client.get(url);
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// read out internet data
+
+void printInternetResponse() {
+  while (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

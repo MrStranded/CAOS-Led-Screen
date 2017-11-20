@@ -4,6 +4,7 @@
 
 void setup() {
   Serial.begin(9600);
+  Serial.flush();
   Serial.println("led screen output:");
 }
 
@@ -14,10 +15,15 @@ void setup() {
 void loop() {
 
   initScreen();
+  initInternet();
 
-  writeText("0123456789");
+  writeText("HeloWrld");
 
   debugScreen();
+
+  createConnection("https://www.continentconquest.ch");
+
+  printInternetResponse();
 
   // ending the programm
   while(1) {}
