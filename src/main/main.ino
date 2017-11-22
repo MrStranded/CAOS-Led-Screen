@@ -21,7 +21,7 @@ void loop() {
 
   debugScreen();
 
-  createConnection("https://www.continentconquest.ch");
+  createConnection("https://www.continentconquest.ch/CAOS/test.txt");
 
   printInternetResponse();
 
