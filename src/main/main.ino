@@ -10,7 +10,8 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  setupINTERNETTest();
+  setupSerial();
+  setupInternetConnection();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -18,7 +19,7 @@ void setup() {
 // main loop of the program
 
 void loop() {
-  loopINTERNETTest();
+  printInternetResponse();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
