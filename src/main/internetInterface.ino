@@ -12,6 +12,10 @@
 #include <Bridge.h>
 #include <HttpClient.h>
 
+// the pin to communicate with the ethernet board
+
+const int ethernetPin = 13;
+
 // the client that connects to the internet
 
 HttpClient client;
@@ -23,7 +27,6 @@ HttpClient client;
 void initInternet() {
   pinMode(ethernetPin, OUTPUT);
   digitalWrite(ethernetPin, LOW);
-  Bridge.begin();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -43,6 +46,7 @@ void printInternetResponse() {
     char c = client.read();
     Serial.print(c);
   }
+  Serial.println("not available anymore");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

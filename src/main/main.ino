@@ -5,7 +5,6 @@
 void setup() {
   Serial.begin(9600);
   Serial.flush();
-  Serial.println("led screen output:");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -14,14 +13,12 @@ void setup() {
 
 void loop() {
 
-  initScreen();
   initInternet();
 
-  writeText("HeloWrld");
-
-  debugScreen();
-
-  createConnection("https://www.continentconquest.ch/CAOS/test.txt");
+  char* url = (char *) "https://www.continentconquest.ch/CAOS/test.txt";
+  Serial.println("connecting to:");
+  Serial.println(url);
+  createConnection(url);
 
   printInternetResponse();
 

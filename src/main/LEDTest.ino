@@ -25,7 +25,9 @@ byte data;
 byte dataArray[10];
 byte testArray[2];
 
-void setup() {
+// %%%%%%%%%%%%%%%%%% renamed so it works in the scope of the main programm
+// %%%%%%%%%%%%%%%%%% call setupLEDTest() inside setup() from main.ino to execute it as usual
+void setupLEDTest() {
   //set pins to output because they are addressed in the main loop
   pinMode(latchPin, OUTPUT);
   pinMode(row1, OUTPUT);
@@ -48,7 +50,9 @@ void setup() {
   testArray[1] = 0x55; //0b01010101
 }
 
-void loop() {
+// %%%%%%%%%%%%%%%%%% renamed so it works in the scope of the main programm
+// %%%%%%%%%%%%%%%%%% call loopLEDTest() inside loop() from main.ino to execute it as usual
+void loopLEDTest() {
 
 //  for (int j = 0; j < 9; j++) {
 //    //load the light sequence you want from array
