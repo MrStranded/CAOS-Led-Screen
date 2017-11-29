@@ -9,57 +9,79 @@
 //
 // -----------------------------------------------------------------------------
 
-#include <Bridge.h>
-#include <HttpClient.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
-// the client that connects to the internet
+// Enter a MAC address for your controller below.
+// Newer Ethernet shields have a MAC address printed on a sticker on the shield
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
-HttpClient client;
+// if you don't want to use DNS (and reduce your sketch size)
+// use the numeric IP instead of the name for the server:
+//IPAddress server(74,125,232,128);  // example of numeric IP for Google (no DNS)
+char server[] = "http://info.cern.ch";
 
-// %%%%%%%%%%%%%%%%%%%%%
+// Set the static IP address to use if the DHCP fails to assign
+IPAddress ip(192, 168, 0, 177);
 
-// set up bridge, pins and ethernet shield
-
-void initInternet() {
-  pinMode(ethernetPin, OUTPUT);
-  digitalWrite(ethernetPin, LOW);
-  Bridge.begin();
-}
-
-// %%%%%%%%%%%%%%%%%%%%%
-
-// create a connection to the given url
-
-void createConnection(String url) {
-  client.get(url);
-}
+// Initialize the Ethernet client library
+// with the IP address and port of the server
+// that you want to connect to (port 80 is default for HTTP):
+EthernetClient client;
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// read out internet data
+// this method sets up a connection to the given url
+// you may read the result with printInternetResponse()
 
-void printInternetResponse() {
-  while (client.available()) {
-    char c = client.read();
-    Serial.print(c);
+void setupInternetConnection() {
+  
+  // start the Ethernet connection:
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // try to congifure using IP address instead of DHCP:
+    Ethernet.begin(mac, ip);
+  }
+  
+  // give the Ethernet shield a second to initialize:
+  delay(1000);
+  Serial.println("connecting...");
+
+  // if you get a connection, report back via serial:
+  if (client.connect(server, 80)) {
+    Serial.println("connected");
+    // Make a HTTP request:
+    client.println("GET /hypertext/WWW/TheProject.html HTTP/1.1");
+    client.println("Host: info.cern.ch");
+    client.println("Accept: text/html");
+    client.println("Connection: close");
+    client.println();
+  } else {
+    // if you didn't get a connection to the server:
+    Serial.println("connection failed");
   }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// closes the active connection
+// prints the response from setupInternetConnection onto the Serial output
 
-void closeConnection() {
-  // TODO
+void printInternetResponse() {
+  // if there are incoming bytes available
+  // from the server, read them and print them:
+  if (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
+
+  // if the server's disconnected, stop the client:
+  if (!client.connected()) {
+    Serial.println();
+    Serial.println("disconnecting.");
+    client.stop();
+
+    // do nothing forevermore:
+    while (true);
+  }
 }
-
-// %%%%%%%%%%%%%%%%%%%%%
-
-// returns the data from the site with the given name
-
-String getData(String name) {
-  // TODO
-}
-
-// %%%%%%%%%%%%%%%%%%%%%
 

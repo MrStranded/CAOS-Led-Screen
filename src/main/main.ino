@@ -1,11 +1,17 @@
 // %%%%%%%%%%%%%%%%%%%%%
 
+// setup of the Serial port used for debugging
+
+void setupSerial() {
+  Serial.begin(9600);
+  Serial.flush();
+}
+
 // main entry point of the code
 
 void setup() {
-  Serial.begin(9600);
-  Serial.flush();
-  Serial.println("led screen output:");
+  setupSerial();
+  setupInternetConnection();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -13,20 +19,7 @@ void setup() {
 // main loop of the program
 
 void loop() {
-
-  initScreen();
-  initInternet();
-
-  writeText("HeloWrld");
-
-  debugScreen();
-
-  createConnection("https://www.continentconquest.ch/CAOS/test.txt");
-
   printInternetResponse();
-
-  // ending the programm
-  while(1) {}
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
