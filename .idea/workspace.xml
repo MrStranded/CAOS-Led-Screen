@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce17a253-b58a-4476-b951-a5600d9c22f8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Request Test/server.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/website/htmltest.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/website/test.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/internetInterface.ino" afterPath="$PROJECT_DIR$/src/main/internetInterface.ino" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/main.ino" afterPath="$PROJECT_DIR$/src/main/main.ino" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />

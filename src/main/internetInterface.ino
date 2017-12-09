@@ -19,9 +19,9 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 
-IPAddress server(192,168,1,113);  // numeric IP
-//char server[] = "http://info.cern.ch"; // textographic IP
-char site[] = "website/pixelinfo.txt";
+char* server;// = "192.168.1.113";
+char* request;// = "GET website/pixelinfo.txt";
+int port = 8000;
 
 // Set the static IP address to use if the DHCP fails to assign
 IPAddress ip(192, 168, 0, 177);
@@ -34,6 +34,41 @@ EthernetClient client;
 // those two are necessary to read in the screen info
 int xCounter = 0;
 int yCounter = 0;
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// connects to the given server:port and sends the given request
+
+void connectToServer(char* serverIp, int serverPort, char* serverRequest) {
+  server = serverIp;
+  port = serverPort;
+  request = serverRequest;
+
+  setupInternetConnection();
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// reads data from request into led matrix
+// mode defines how the incoming data is handled
+// mode = 0 : pixel data read separately
+// mode = 1 : characters interpreted as value of led matrix column
+// mode = 2 : characters are put into led matrix as whole multi-line letters
+
+void readResponse(int mode) {
+  if (mode == 0) {
+    Serial.println("Reading pixel data.");
+    while (putPixelResponseIntoLedMatrix()) {}
+  }
+  if (mode == 1) {
+    Serial.println("Reading byte data.");
+    while (putByteResponseIntoLedMatrix()) {}
+  }
+  if (mode == 2) {
+    Serial.println("Reading text data.");
+    while (putTextResponseIntoLedMatrix()) {}
+  }
+}
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -54,12 +89,12 @@ void setupInternetConnection() {
   Serial.println("connecting...");
 
   // if you get a connection, report back via serial:
-  if (client.connect(server, 8000)) {
+  if (client.connect(server, port)) {
     Serial.println("connected");
     // Make a HTTP request:
-    client.print("GET ");
-    client.println(site);
-    client.println("Host: 192.168.1.113");
+    client.println(request);
+    client.print("Host: ");
+    client.println(server);
     client.println("Accept: text/html");
     client.println("Connection: close");
     client.println();
@@ -72,24 +107,33 @@ void setupInternetConnection() {
 // %%%%%%%%%%%%%%%%%%%%%
 
 // puts the server response into the led matrix
+// if a '0' is read, then the corresponding pixel is set to low
+// if a '1' is read, then the corresponding pixel is set to high
 
-void putResponseIntoLedMatrix() {
+int putPixelResponseIntoLedMatrix() {
   if (client.available()) {
     char c = client.read();
-    Serial.print(c);
+    
+    // did we encounter a '0' or '1'?
     int found = 0;
+
+    // data for low pixel
     if (c == '0') {
       found=1;
-      setPixel(xCounter,7-yCounter,0);
-    } else if (c == '1') {
-      //Serial.println("FOUND!");
-      //Serial.println(xCounter);
-      //Serial.println(yCounter);
-      found=1;
-      setPixel(xCounter,7-yCounter,1);
+      setPixel(xCounter,7-yCounter,0); // 7-yCounter because it would be on the head otherwise
     }
+
+    // data for high pixel
+    if (c == '1') {
+      found=1;
+      setPixel(xCounter,7-yCounter,1); // 7-yCounter because it would be on the head otherwise
+    }
+
+    // we encountered a '0' or '1'
     if (found) {
+      // setting the new pixel positions
       yCounter++;
+      // getting to the next column
       if (yCounter >= 8) {
         yCounter = 0;
         xCounter++;
@@ -99,14 +143,61 @@ void putResponseIntoLedMatrix() {
   
   // if the server's disconnected, stop the client:
   if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
-
-    // do nothing forevermore:
-    debugScreen();
-    while (true);
+    closeConnection();
+    return 0;
   }
+  return 1;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// puts the read character as byte into the next led matrix column
+
+int putByteResponseIntoLedMatrix() {
+  if (client.available()) {
+    char c = client.read();
+    writeChar(c,xCounter);
+
+    xCounter++;
+  }
+  
+  // if the server's disconnected, stop the client:
+  if (!client.connected()) {
+    closeConnection();
+    return 0;
+  }
+  return 1;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// puts the read character asletter into the next led matrix letter slot
+
+int putTextResponseIntoLedMatrix() {
+  if (client.available()) {
+    char c = client.read();
+    writeCharIntoSlot(c,xCounter);
+
+    xCounter++;
+  }
+  
+  // if the server's disconnected, stop the client:
+  if (!client.connected()) {
+    closeConnection();
+    return 0;
+  }
+  return 1;
+}
+
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// closes the running connection
+
+void closeConnection() {
+    Serial.println("disconnecting.");
+    Serial.println();
+    client.stop();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -123,9 +214,7 @@ void printInternetResponse() {
 
   // if the server's disconnected, stop the client:
   if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
+    closeConnection();
 
     // do nothing forevermore:
     while (true);
