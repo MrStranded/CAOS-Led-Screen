@@ -19,7 +19,11 @@ void setup() {
 // main loop of the program
 
 void loop() {
-  printInternetResponse();
+  putResponseIntoLedMatrix();
+  //printInternetResponse();
+  
+  //debugScreen();
+  //while(1){}
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

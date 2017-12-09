@@ -18,8 +18,10 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
-//IPAddress server(74,125,232,128);  // example of numeric IP for Google (no DNS)
-char server[] = "http://info.cern.ch";
+
+IPAddress server(192,168,1,113);  // numeric IP
+//char server[] = "http://info.cern.ch"; // textographic IP
+char site[] = "website/pixelinfo.txt";
 
 // Set the static IP address to use if the DHCP fails to assign
 IPAddress ip(192, 168, 0, 177);
@@ -28,6 +30,10 @@ IPAddress ip(192, 168, 0, 177);
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
 EthernetClient client;
+
+// those two are necessary to read in the screen info
+int xCounter = 0;
+int yCounter = 0;
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -48,17 +54,58 @@ void setupInternetConnection() {
   Serial.println("connecting...");
 
   // if you get a connection, report back via serial:
-  if (client.connect(server, 80)) {
+  if (client.connect(server, 8000)) {
     Serial.println("connected");
     // Make a HTTP request:
-    client.println("GET /hypertext/WWW/TheProject.html HTTP/1.1");
-    client.println("Host: info.cern.ch");
+    client.print("GET ");
+    client.println(site);
+    client.println("Host: 192.168.1.113");
     client.println("Accept: text/html");
     client.println("Connection: close");
     client.println();
   } else {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
+  }
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// puts the server response into the led matrix
+
+void putResponseIntoLedMatrix() {
+  if (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+    int found = 0;
+    if (c == '0') {
+      found=1;
+      setPixel(xCounter,7-yCounter,0);
+    } else if (c == '1') {
+      //Serial.println("FOUND!");
+      //Serial.println(xCounter);
+      //Serial.println(yCounter);
+      found=1;
+      setPixel(xCounter,7-yCounter,1);
+    }
+    if (found) {
+      yCounter++;
+      if (yCounter >= 8) {
+        yCounter = 0;
+        xCounter++;
+      }
+    }
+  }
+  
+  // if the server's disconnected, stop the client:
+  if (!client.connected()) {
+    Serial.println();
+    Serial.println("disconnecting.");
+    client.stop();
+
+    // do nothing forevermore:
+    debugScreen();
+    while (true);
   }
 }
 

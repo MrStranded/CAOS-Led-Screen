@@ -7,7 +7,7 @@
 // screenWidth remembers the width of the led screen
 // should normally be 48, but can differ for debbuging reasons
 
-const int screenWidth = 60;
+const int screenWidth = 48;
 
 // defines the width of the printed chars
 // does not affect the data from chars.ino, only the character distribution on the screen (default = 5)
@@ -82,16 +82,16 @@ void putChars(char* data, int length) {
 
 void setPixel(int x,int y,int power) {
   // pixelMask is 0 everywhere, except in position y
-  char pixelMask = 1 << (y-1);
+  char pixelMask = 1 << (y);
   
   // columnMask is 1 everywhere, except in position y
   char columnMask = 255 - pixelMask;
   
   // pixelMask has to be multiplied with power, so it contains new value of pixel
   pixelMask = pixelMask * power;
-  
+
   // the pixelvalue copied at every bit where pixelMask is 1 and reset at the position where pixelMask is 0 by columnMask
-  pixels[x] = (pixels[x] & pixelMask) | columnMask;
+  pixels[x] = pixelMask | (pixels[x] & columnMask);
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -103,7 +103,7 @@ int getPixel(int x,int y) {
   char mask = 1 << (y);
 
   // the & operator returns an int that is 0 everywhere, except in position y, where it has the value of the pixel
-  return pixels[x] & mask;
+  return (pixels[x] & mask) != 0;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
