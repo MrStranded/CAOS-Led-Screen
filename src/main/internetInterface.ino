@@ -20,7 +20,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // use the numeric IP instead of the name for the server:
 
 char* server;// = "192.168.1.113";
-char* request;// = "GET website/pixelinfo.txt";
+char* request;// = "GET website/pixelinfo_horizontal.txt";
 int port = 8000;
 
 // Set the static IP address to use if the DHCP fails to assign
@@ -51,20 +51,25 @@ void connectToServer(char* serverIp, int serverPort, char* serverRequest) {
 
 // reads data from request into led matrix
 // mode defines how the incoming data is handled
-// mode = 0 : pixel data read separately
-// mode = 1 : characters interpreted as value of led matrix column
-// mode = 2 : characters are put into led matrix as whole multi-line letters
+// mode = 0 : pixel data read separately (vertical)
+// mode = 1 : pixel data read separately (horizontal)
+// mode = 2 : characters interpreted as value of led matrix column
+// mode = 3 : characters are put into led matrix as whole multi-line letters
 
 void readResponse(int mode) {
   if (mode == 0) {
-    Serial.println("Reading pixel data.");
-    while (putPixelResponseIntoLedMatrix()) {}
+    Serial.println("Reading pixel data vertically.");
+    while (putPixelResponseIntoLedMatrix(0)) {}
   }
   if (mode == 1) {
+    Serial.println("Reading pixel data horizontally.");
+    while (putPixelResponseIntoLedMatrix(1)) {}
+  }
+  if (mode == 2) {
     Serial.println("Reading byte data.");
     while (putByteResponseIntoLedMatrix()) {}
   }
-  if (mode == 2) {
+  if (mode == 3) {
     Serial.println("Reading text data.");
     while (putTextResponseIntoLedMatrix()) {}
   }
@@ -109,34 +114,49 @@ void setupInternetConnection() {
 // puts the server response into the led matrix
 // if a '0' is read, then the corresponding pixel is set to low
 // if a '1' is read, then the corresponding pixel is set to high
+// direction denotes the direction in which the pixel data is oriented in the file
+// direction == 0 : vertically
+// direction != 0 : horizontally
 
-int putPixelResponseIntoLedMatrix() {
+int putPixelResponseIntoLedMatrix(int direction) {
   if (client.available()) {
     char c = client.read();
     
     // did we encounter a '0' or '1'?
     int found = 0;
+    int yPos = 7-yCounter; // 7-yCounter because it would be on the head otherwise in the vertical case
+    if (direction != 0) yPos = yCounter;
 
     // data for low pixel
     if (c == '0') {
       found=1;
-      setPixel(xCounter,7-yCounter,0); // 7-yCounter because it would be on the head otherwise
+      setPixel(xCounter,yPos,0);
     }
 
     // data for high pixel
     if (c == '1') {
       found=1;
-      setPixel(xCounter,7-yCounter,1); // 7-yCounter because it would be on the head otherwise
+      setPixel(xCounter,yPos,1);
     }
 
     // we encountered a '0' or '1'
     if (found) {
       // setting the new pixel positions
-      yCounter++;
-      // getting to the next column
-      if (yCounter >= 8) {
-        yCounter = 0;
+
+      if (direction == 0) { // ----- vertical
+        yCounter++;
+        // getting to the next column
+        if (yCounter >= 8) {
+          yCounter = 0;
+          xCounter++;
+        }
+      } else { // ------------------ horizontal
         xCounter++;
+        // getting to the next column
+        if (xCounter >= 48) {
+          xCounter = 0;
+          yCounter++;
+        }
       }
     }
   }

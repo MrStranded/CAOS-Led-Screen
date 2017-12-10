@@ -17,8 +17,8 @@ void setupSerial() {
 void setup() {
   setupSerial();
 
-  connectToServer("192.168.1.113",8000,"GET website/textinfo.txt");
-  readResponse(2);
+  connectToServer("192.168.1.113",8000,"GET website/pixelinfo_horizontal.txt");
+  readResponse(1);
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
