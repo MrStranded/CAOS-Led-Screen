@@ -54,9 +54,9 @@ void drawLedScreen() {
     digitalWrite(dataPin, LOW);
     digitalWrite(clockPin, LOW);
     // get data
-    data = getRow(r);
+    fillRow(data, r);
     // shift out 6 bytes of data
-    for (int i = 5; i => 0; i--) {
+    for (int i = 5; i >= 0; i--) {
       SPI.transfer(data[i]);
       // shiftOut(dataPin, clockPin, data[i]);
     }

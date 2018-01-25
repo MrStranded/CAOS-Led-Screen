@@ -7,6 +7,8 @@
  * LEDs attached to each of the outputs of the shift register
 
  */
+
+ /*
 //Pin connected to ST_CP of 74HC595
 int latchPin = 11;
 //Pin connected to SH_CP of 74HC595
@@ -137,5 +139,5 @@ void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
 
   //stop shifting
   digitalWrite(myClockPin, 0);
-}
+}*/
 
