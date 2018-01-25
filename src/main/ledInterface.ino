@@ -34,27 +34,18 @@ void initScreen() {
 // it then fills the array with the bits from the requested row
 
 byte fillRow(byte *rowBytes, int row) {
-
-  for (int i=0; i<6; i++) {
-    if (row%2==0) {
-      rowBytes[i] = 0b01010101;
-    } else {
-      rowBytes[i] = 0b10101010;
-    }
-  }
-  
-  /*rowBytes = "";
-  
   for (int b=0; b<6; b++) { // b counts in which byte we want to put the pixel data
-    for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
+    rowBytes[b] = 0b11111111; // clear byte
+  
+    /*for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
       int x = b*8 + i; // x is the coordinate of the pixel we want
 
       int power = getPixel(x,row);
       power = power<<i; // we have to shift the data
 
       rowBytes[b] = rowBytes[b] | power; // this adds a 1 or 0 into the current slot
-    }
-  }*/
+    }*/
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
