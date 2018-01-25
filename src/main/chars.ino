@@ -10,8 +10,10 @@ int getCharacterWidth(char cIn) {
   switch(cIn) {
     case 'i':
       return 1;
+    case 's':
+      return 3;
   }
-  return 5;
+  return 4;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -79,11 +81,7 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 'i':
-      c[0] = 0b00000000;
-      c[1] = 0b00000000;
-      c[2] = 0b00111101;
-      c[3] = 0b00000000;
-      c[4] = 0b00000000;
+      c[0] = 0b00111101;
       break;
     case 'j':
       c[0] = 0b00000000;
@@ -149,11 +147,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 's':
-      c[0] = 0b00000000;
-      c[1] = 0b00100100;
-      c[2] = 0b00101010;
-      c[3] = 0b00010010;
-      c[4] = 0b00000000;
+      c[0] = 0b00100100;
+      c[1] = 0b00101010;
+      c[2] = 0b00010010;
+      c[3] = 0b00000000;
       break;
     case 't':
       c[0] = 0b00000000;
