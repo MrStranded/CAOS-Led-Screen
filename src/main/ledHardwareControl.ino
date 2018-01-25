@@ -67,14 +67,4 @@ void drawLedScreen() {
     // hold current state for x ms
     delay(10);
   }
-
-
-
-    if (getPixel(x,currentScreenColumn)) {
-
 }
-
-byte getRow(int r) {
-  
-}
-
