@@ -22,11 +22,11 @@ void setup() {
   //setupSerial();
   initLedScreen();
 
-  setAll(1);
+  //setAll(1);
 
   //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
   //readResponse(1);
-  //writeText("Penis");
+  writeText("Penis");
 
   //setupLEDTest();
 }

@@ -12,7 +12,7 @@ const int screenWidth = 48;
 // defines the width of the printed chars
 // does not affect the data from chars.ino, only the character distribution on the screen (default = 5)
 
-const int characterWidth = 6;
+const int characterWidth = 5;
 
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
@@ -35,16 +35,17 @@ void initScreen() {
 
 byte fillRow(byte *rowBytes, int row) {
   for (int b=0; b<6; b++) { // b counts in which byte we want to put the pixel data
-    rowBytes[b] = 0b11111111; // clear byte
+    rowBytes[b] = 0; // clear byte
+    
   
-    /*for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
+    for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
       int x = b*8 + i; // x is the coordinate of the pixel we want
 
-      int power = getPixel(x,row);
-      power = power<<i; // we have to shift the data
+      int power = getPixel(x,7-row);
+      power = power<<(7-i); // we have to shift the data
 
       rowBytes[b] = rowBytes[b] | power; // this adds a 1 or 0 into the current slot
-    }*/
+    }
   }
 }
 
