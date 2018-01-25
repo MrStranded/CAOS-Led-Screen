@@ -22,7 +22,6 @@ byte data[6];
 // column of Led screen that is currently drawn
 int currentScreenRow = 0;
 
-
 // %%%%%%%%%%%%%%%%%%%%%
 
 // initializes led screen pins
@@ -35,8 +34,6 @@ void initLedScreen() {
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
-
-  
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
