@@ -5,8 +5,9 @@
 //
 // -----------------------------------------------------------------------------
 
-// pins 1 to 8 : column 1 to 8
+#include <SPI.h>
 
+// pins 1 to 8 : row 1 to 8
 int rowPin[8] = {0,1,2,3,4,5,6,7};
 
 //Pin connected to ST_CP of 74HC595
@@ -18,9 +19,6 @@ int dataPin = 11;
 
 // data array for shiftregisters
 byte data[6];
-
-// column of Led screen that is currently drawn
-int currentScreenRow = 0;
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -36,6 +34,13 @@ void initLedScreen() {
   pinMode(clockPin, OUTPUT);
 
   SPI.begin();
+
+  data[0] = 0b10101010;
+  data[1] = 0b01010101;
+  data[2] = 0b10101010;
+  data[3] = 0b01010101;
+  data[4] = 0b10101010;
+  data[5] = 0b01010101;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -45,11 +50,8 @@ void initLedScreen() {
 void drawLedScreen() {
   // for each row
   for (int r = 0; r < 8; r++) {
-    
     // ground latchPin while transmitting data
     digitalWrite(latchPin, LOW); // disable shift-register output
-    // deactivate last row
-    digitalWrite(rowPin[(r-1)%8], LOW); 
     // delete registers
     digitalWrite(dataPin, LOW);
     digitalWrite(clockPin, LOW);
@@ -60,6 +62,7 @@ void drawLedScreen() {
     // shift out 6 bytes of data
     for (int i = 5; i >= 0; i--) {
       SPI.transfer(data[i]);
+      //SPI.transfer(data[i]);
       // shiftOut(dataPin, clockPin, data[i]);
     }
     
@@ -67,8 +70,8 @@ void drawLedScreen() {
     digitalWrite(rowPin[r], HIGH);
     // latchpin no longer needs to listen for information
     digitalWrite(latchPin, HIGH);
-    
-    // hold current state for x ms
-    delay(10);
+    // display current frame [ms]
+    delay(1);
+    digitalWrite(rowPin[r], LOW);
   }
 }

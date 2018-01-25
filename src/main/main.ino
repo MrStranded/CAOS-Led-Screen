@@ -19,7 +19,7 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  setupSerial();
+  //setupSerial();
   initLedScreen();
 
   setAll(1);
@@ -36,26 +36,7 @@ void setup() {
 // main loop of the program
 
 void loop() {
-  int counter = 0;
-  int mode = 1;
-  
-  //loopLEDTest();
-  debugScreen();
-
-  while (1) {
-    drawLedScreen();
-
-    delay(LEDFRAMEDELAY);
-
-    /*
-    counter++;
-    if (counter >= 100) {
-      counter -= 100;
-      mode = 1 - mode;
-      setAll(mode);
-    }*/
-    
-  }
+  drawLedScreen();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
