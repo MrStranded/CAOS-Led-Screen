@@ -36,6 +36,9 @@ void setup() {
 // main loop of the program
 
 void loop() {
+  int counter = 0;
+  int mode = 1;
+  
   //loopLEDTest();
   debugScreen();
 
@@ -43,6 +46,13 @@ void loop() {
     drawLedScreen();
 
     delay(LEDFRAMEDELAY);
+
+    counter++;
+    if (counter >= 100) {
+      counter -= 100;
+      mode = 1 - mode;
+      setAll(mode);
+    }
   }
 }
 

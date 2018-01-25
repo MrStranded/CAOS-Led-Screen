@@ -28,7 +28,7 @@ int currentScreenColumn = 0;
 void initLedScreen() {
   for (int i=0; i<8; i++) {
     pinMode(columnPin[i], OUTPUT);
-    digitalWrite(columnPin[i], HIGH);
+    digitalWrite(columnPin[i], LOW); // set output for column pins
   }
 
   pinMode(shiftPinClock, OUTPUT);
@@ -64,8 +64,14 @@ void drawLedScreen() {
   }
   
   digitalWrite(shiftPinClock, LOW); // cleanup
+
+  int previousScreenColumn = currentScreenColumn - 1; // the previous column
+  if (previousScreenColumn < 0) previousScreenColumn += 8; // the previous of the lowest column is the highest column
+  digitalWrite(columnPin[previousScreenColumn], LOW); // disable previous column
   
   digitalWrite(shiftPinLatch, HIGH); // enable shift-register output
+  digitalWrite(columnPin[currentScreenColumn], HIGH); // enable current column
+    
   currentScreenColumn = (currentScreenColumn + 1) % 8; // go to the next
 }
 
