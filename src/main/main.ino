@@ -35,8 +35,16 @@ void setup() {
 
 // main loop of the program
 
+int counter = 0;
+
 void loop() {
   drawLedScreen();
+  counter++;
+  if (counter >= 50) {
+    shiftTextLeft();
+    counter -= 50;
+  }
+  
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

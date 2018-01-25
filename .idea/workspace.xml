@@ -29,7 +29,8 @@
             <state relative-caret-position="162">
               <caret line="24" column="12" lean-forward="false" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
               <folding>
-                <marker date="1516894455000" expanded="true" signature="616:887" ph="{...}" />
+                <marker date="1516904589000" expanded="true" signature="345:349" ph="{...}" />
+                <marker date="1516904589000" expanded="true" signature="638:640" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -38,8 +39,8 @@
       <file leaf-file-name="ledHardwareControl.ino" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/ledHardwareControl.ino">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+            <state relative-caret-position="446">
+              <caret line="54" column="23" lean-forward="true" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -48,8 +49,8 @@
       <file leaf-file-name="chars.ino" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/chars.ino">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="15" lean-forward="false" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+            <state relative-caret-position="360">
+              <caret line="24" column="15" lean-forward="false" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -59,29 +60,21 @@
         <entry file="file://$PROJECT_DIR$/src/main/ledInterface.ino">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1797">
-              <caret line="138" column="36" lean-forward="false" selection-start-line="138" selection-start-column="36" selection-end-line="138" selection-end-column="36" />
+              <caret line="143" column="36" lean-forward="false" selection-start-line="143" selection-start-column="36" selection-end-line="143" selection-end-column="36" />
               <folding>
-                <marker date="1516900703000" expanded="true" signature="1561:1563" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="1565:1641" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="1664:1861" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="1863:1943" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="1982:2246" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="2248:2363" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="2406:2447" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="2449:2534" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="2563:2651" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="2653:2734" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="2774:2874" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="2876:3015" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="3054:3526" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="3528:3599" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="3627:3852" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="3854:3918" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="3939:3955" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="3957:4095" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="4120:4273" ph="{...}" />
-                <marker date="1516900703000" expanded="true" signature="4275:4344" ph="//..." />
-                <marker date="1516900703000" expanded="true" signature="4365:4604" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="2869:2884" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="2886:2967" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="3007:3107" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="3109:3248" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="3287:3759" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="3761:3832" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="3860:4085" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="4087:4151" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="4172:4188" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="4190:4328" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="4353:4506" ph="{...}" />
+                <marker date="1516905851000" expanded="true" signature="4508:4577" ph="//..." />
+                <marker date="1516905851000" expanded="true" signature="4598:4837" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -499,7 +492,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6000" />
+    <option name="totallyTimeSpent" value="162000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
