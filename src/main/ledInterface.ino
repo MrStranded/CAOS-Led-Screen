@@ -30,9 +30,12 @@ void initScreen() {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// returns a byte array of six bytes which hold each 8 bits of the requested row
+// this method requires the pointer to a byte array with length 6 and the number of the row that's being requested
+// it then fills the array with the bits from the requested row
 
 byte fillRow(byte *rowBytes, int row) {
+  rowBytes = "";
+  
   for (int b=0; b<6; b++) { // b counts in which byte we want to put the pixel data
     for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
       int x = b*8 + i; // x is the coordinate of the pixel we want
