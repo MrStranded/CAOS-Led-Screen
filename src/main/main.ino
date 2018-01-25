@@ -47,12 +47,14 @@ void loop() {
 
     delay(LEDFRAMEDELAY);
 
+    /*
     counter++;
     if (counter >= 100) {
       counter -= 100;
       mode = 1 - mode;
       setAll(mode);
-    }
+    }*/
+    
   }
 }
 

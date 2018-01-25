@@ -9,17 +9,19 @@
 
 int columnPin[8] = {0,1,2,3,4,5,6,7};
 
-// pin 9  : shift-register clock
-// pin 11 : shift-register data
-// pin 10 : shift-register latch
+//Pin connected to ST_CP of 74HC595
+int latchPin = 10;
+//Pin connected to SH_CP of 74HC595
+int clockPin = 13;
+////Pin connected to DS of 74HC595
+int dataPin = 11;
 
-int shiftPinClock = 9;
-int shiftPinData = 11;
-int shiftPinLatch = 10;
+// data array for shiftregisters
+byte data[6];
 
 // column of Led screen that is currently drawn
-
 int currentScreenColumn = 0;
+
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -30,48 +32,49 @@ void initLedScreen() {
     pinMode(columnPin[i], OUTPUT);
     digitalWrite(columnPin[i], LOW); // set output for column pins
   }
+  pinMode(dataPin, OUTPUT);
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
 
-  pinMode(shiftPinClock, OUTPUT);
-  pinMode(shiftPinData, OUTPUT);
-  pinMode(shiftPinLatch, OUTPUT);
-
-  digitalWrite(shiftPinClock, LOW);
-  digitalWrite(shiftPinData, LOW);
-  digitalWrite(shiftPinLatch, LOW);
+  
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// draws the screen column by column
+// draws the screen row by row
 
 void drawLedScreen() {
-  digitalWrite(shiftPinLatch, LOW); // disable shift-register output
-  digitalWrite(shiftPinData, LOW);
-  digitalWrite(shiftPinClock, LOW);
+  // for each row
+  for (int r = 0; r < 8; r++) {
+    // ground latchPin while transmitting data
+    digitalWrite(latchPin, LOW); // disable shift-register output
+    // deactivate last row
+    digitalWrite(columnPin[(r-1)%8], LOW); 
+    // delete registers
+    digitalWrite(dataPin, LOW);
+    digitalWrite(clockPin, LOW);
+    // get data
+    data = getRow(r);
+    // shift out 6 bytes of data
+    for (int i = 5; i => 0; i--) {
+      SPI.transfer(data[i]);
+      // shiftOut(dataPin, clockPin, data[i]);
+    }
+    // set current row to high
+    digitalWrite(columnPin[r], HIGH);
+    // latchpin no longer needs to listen for information
+    digitalWrite(latchPin, HIGH);
+    // hold current state for x ms
+    delay(10);
+  }
 
-  for (int x=0; x<48; x++) {
-    digitalWrite(shiftPinClock, LOW); // we want to prepare the next data point
+
 
     if (getPixel(x,currentScreenColumn)) {
-      digitalWrite(shiftPinData, HIGH); // the current pixel is on
-    } else {
-      digitalWrite(shiftPinData, LOW); // the current pixel is off
-    }
-    
-    digitalWrite(shiftPinClock, HIGH); // we want to send the data
-    //delay(10);
-    digitalWrite(shiftPinData, LOW);
-  }
-  
-  digitalWrite(shiftPinClock, LOW); // cleanup
 
-  int previousScreenColumn = currentScreenColumn - 1; // the previous column
-  if (previousScreenColumn < 0) previousScreenColumn += 8; // the previous of the lowest column is the highest column
-  digitalWrite(columnPin[previousScreenColumn], LOW); // disable previous column
+}
+
+byte getRow(int r) {
   
-  digitalWrite(shiftPinLatch, HIGH); // enable shift-register output
-  digitalWrite(columnPin[currentScreenColumn], HIGH); // enable current column
-    
-  currentScreenColumn = (currentScreenColumn + 1) % 8; // go to the next
 }
 
