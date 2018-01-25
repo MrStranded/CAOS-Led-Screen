@@ -1,3 +1,8 @@
+// states for the state machine (if needed)
+
+#define CONNECTIONSTATE 0
+#define WAITINGSTATE 1
+
 // %%%%%%%%%%%%%%%%%%%%%
 
 // setup of the Serial port used for debugging
@@ -11,7 +16,9 @@ void setupSerial() {
 
 void setup() {
   setupSerial();
-  setupInternetConnection();
+
+  connectToServer("192.168.1.113",8000,"GET website/pixelinfo_horizontal.txt");
+  readResponse(1);
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -19,7 +26,8 @@ void setup() {
 // main loop of the program
 
 void loop() {
-  printInternetResponse();
+  debugScreen();
+  while(1){}
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
