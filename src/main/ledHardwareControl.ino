@@ -30,7 +30,7 @@ int currentScreenColumn = 0;
 void initLedScreen() {
   for (int i=0; i<8; i++) {
     pinMode(columnPin[i], OUTPUT);
-    digitalWrite(columnPin[i], LOW); // set output for column pins
+    digitalWrite(columnPin[i], LOW); // initialize output for column pins
   }
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);

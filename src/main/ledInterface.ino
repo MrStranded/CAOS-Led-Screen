@@ -30,6 +30,26 @@ void initScreen() {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
+// returns a byte array of six bytes which hold each 8 bits of the requested row
+
+byte *getRow(int row) {
+  byte rowBytes[6] = ""; // "" initializes the array with zeros
+  for (int b=0; b<6; b++) { // b counts in which byte we want to put the pixel data
+    for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
+      int x = b*8 + i; // x is the coordinate of the pixel we want
+
+      int power = getPixel(x,row);
+      power = power<<i; // we have to shift the data
+
+      rowBytes[b] = rowBytes[b] | power; // this adds a 1 or 0 into the current slot
+    }
+  }
+
+  return rowBytes;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
 // shifts the data of the whole screen to the left
 
 void shiftTextLeft() {
