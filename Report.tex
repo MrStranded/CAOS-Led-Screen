@@ -22,6 +22,7 @@ Es gibt mehrere Gründe, weshalb wir uns vorrangig für eine zweidimensionale LE
 
 \subsubsection{Display}
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
 (Bild)\\\\
 
 Die 384 LEDs befinden sich verteilt auf zwei Steckbrettern. Die acht Reihen der Bank werden direkt vom Arduino angesprochen. Die 48 Kolonnen steuern wir über drei Pins des Arduinos mittels Shift Registern. Ein Shift Register hat jeweils acht Output Pins, weshalb wir insgesamt sechs Shift Register benutzen, welche in Reihe geschaltet sind.\\
@@ -42,8 +43,34 @@ Das Ethernet Shield für das Arduino Uno, welches wir benutzen um Daten aus dem 
 
 \subsection{technische Details}
 
+\subsubsection{Display}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
+
+\subsubsection{Code}
+
+Der Code ist strukturiert in verschiedene Dateien, welche auch als Module dienen. Diese Module sind: ''main``, ''internetInterface``, ''ledInterface`` und '' ledHardwareControl``.\\
+Das ''main`` Modul macht nicht viel mehr als die anderen Module zu initialisieren und die Program Loop zu steuern.\\
+Das Modul ''internetInterface`` kümmert sich um den Aufbau einer Verbindung zur gefragten Internetseite und um die Interpretation der Antwort als Bitmuster, welches in den internen Grafikspeicher geladen wird.\\
+Das ''ledInterface`` Modul enthält den Grafikspeicher, welcher aus einem 48 Felder grossen char Array besteht, mit welchem die Lichtzustände der Pixel gespeichert werden. Ausserdem bietet es viele Komfortfunktionen für den Zugriff auf gegebenen Grafikspeicher und die Manipulation dessen.\\
+Das Modul ''ledHardwareControl`` kümmert sich um die Ansprechung der Output Pins des Arduinos. Es benutzt dazu die Daten aus dem ''ledInterface`` Modul um zu entscheiden, welche Leitungen an- und welche abgeschaltet werden sollen.\\
+
+\subsubsection{Webseite}
+
+Auf der Webseite liegen Dateien, welche vom Arduino ausgelesen werden können. Diese Dateien sollten im .txt Dateiformat vorliegen und mit dem UTF-8 Encoding beschrieben sein. Dabei kann das Arduino mit vier verschieden Arten der Dateiweitergabe umgehen:\\
+1) In der Datei liegt ein Text vor. Dieser wird dann auf das Display geschrieben.\\
+2) Die Characters in der Datei werden als Bytes interpretiert. Das Display füllt sich dann Spalte für Spalte mit den Bitmustern, die den jeweiligen Bits in den Bytes (Character) entsprechen.\\
+3+4) Die Datei ist gefüllt mit Zeilen aus Nullen und Einsen. Nullen entsprechen ausgeschalteten Pixeln und Einsen eingeschalteten. Diese Datei kann entweder horizontal (x=48, y=8) oder vertikal (x=8, y=48) orientiert sein. Daraus entstehen die zwei unterschiedlichen Formate.\\
+
 \section{Zusammenfassung}
 
+################################## TODO!!!!!\\
+(Wie gut läuft es schlussendlich?)\\
+
+Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Was schwieriger war als erwartet, war der Umgang mit den Shift Registern, welche sich Anfangs nie so verhalten haben wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Die Einschränkung auf Http macht es schwierig auf viele moderne Webseiten zuzugreifen.\\
+
 \section{Quellen}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
 
 \end{document}
