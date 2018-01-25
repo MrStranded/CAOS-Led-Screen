@@ -3,6 +3,10 @@
 #define CONNECTIONSTATE 0
 #define WAITINGSTATE 1
 
+// delay between frames in miliseconds
+
+#define LEDFRAMEDELAY 10
+
 // %%%%%%%%%%%%%%%%%%%%%
 
 // setup of the Serial port used for debugging
@@ -16,9 +20,15 @@ void setupSerial() {
 
 void setup() {
   setupSerial();
+  initLedScreen();
 
-  connectToServer("192.168.1.113",8000,"GET website/pixelinfo_horizontal.txt");
-  readResponse(1);
+  setAll(1);
+
+  //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
+  //readResponse(1);
+  //writeText("Penis");
+
+  //setupLEDTest();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -26,8 +36,14 @@ void setup() {
 // main loop of the program
 
 void loop() {
+  //loopLEDTest();
   debugScreen();
-  while(1){}
+
+  while (1) {
+    drawLedScreen();
+
+    delay(LEDFRAMEDELAY);
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

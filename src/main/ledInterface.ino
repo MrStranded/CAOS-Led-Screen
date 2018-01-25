@@ -30,6 +30,20 @@ void initScreen() {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
+// shifts the data of the whole screen to the left
+
+void shiftTextLeft() {
+  char firstRow = pixels[0];
+  
+  for (int x=0; x<screenWidth-1; x++) {
+    pixels[x] = pixels[x+1];
+  }
+
+  pixels[screenWidth-1] = firstRow; // feed the data from the front back in in the back
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
 // writes given char into specified position on screen
 
 void writeChar(char c, int position) {
@@ -143,7 +157,7 @@ void debugScreen() {
       if (power == 0) {
         Serial.print(".");
       } else {
-        Serial.print("x");
+        Serial.print("#");
       }
     }
     Serial.println("");
