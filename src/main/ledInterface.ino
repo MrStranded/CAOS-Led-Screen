@@ -12,7 +12,7 @@ const int screenWidth = 48;
 // defines the width of the printed chars
 // does not affect the data from chars.ino, only the character distribution on the screen (default = 5)
 
-const int characterWidth = 5;
+const int characterWidth = 5; // should not be necessary anymore (see chars.ino getCharacterWidth)
 
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
@@ -70,7 +70,9 @@ void shiftTextLeft() {
 void writeChar(char c, int position) {
   if (position < 0) { position = 0; }
   char* pixelData = getPixelsFromChar(c);
-  for (int i=0; i<5; i++) {
+  int width = getCharacterWidth(c);
+  
+  for (int i=0; i<width; i++) {
     if (i+position < screenWidth) {
       pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
     }
@@ -90,9 +92,11 @@ void writeCharIntoSlot(char c, int slot) {
 // writes text into the led screen, beginning from the left
 
 void writeText(char* text) {
+  int pos = 0;
   int i = 0;
   while (text[i] != 0) {
-    writeCharIntoSlot(text[i],i);
+    writeChar(text[i],pos);
+    pos += getCharacterWidth(text[i]) + 1; // + 1 is for the space between letters
     i++;
   }
 }

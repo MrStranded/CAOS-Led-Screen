@@ -4,6 +4,18 @@
 //
 // -----------------------------------------------------------------------------
 
+// returns the width of the character in pixels (without empty space to the sides)
+
+int getCharacterWidth(char cIn) {
+  switch(cIn) {
+    case 'i':
+      return 1;
+  }
+  return 5;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
 // returns a char[5] array with the pixel data corresponding to the given char
 
 char* getPixelsFromChar(char cIn) {
