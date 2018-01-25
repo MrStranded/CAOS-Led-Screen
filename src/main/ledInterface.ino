@@ -20,12 +20,25 @@ const int characterWidth = 5; // should not be necessary anymore (see chars.ino 
 
 char pixels[screenWidth] = ""; // "" initializes the array with zeros
 
+// remembers the current frame in the movie
+
+int movieFrame = 0;
+
 // %%%%%%%%%%%%%%%%%%%%%
 
 // initializes the screen
 
 void initScreen() {
   clearScreen();
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// loads next frame into pixels array
+
+void loadNextMovieFrame() {
+  fillNextFrame(pixels,movieFrame);
+  movieFrame++;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
