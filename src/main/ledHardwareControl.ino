@@ -34,6 +34,8 @@ void initLedScreen() {
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
+
+  SPI.begin();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
