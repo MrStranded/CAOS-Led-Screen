@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------------
+/*// -----------------------------------------------------------------------------
 //
 // In this file you will find methods to control the internet connection of the arduino
 // and to get data from the internet conveniantly.
@@ -240,4 +240,4 @@ void printInternetResponse() {
     while (true);
   }
 }
-
+*/

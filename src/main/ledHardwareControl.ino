@@ -13,9 +13,9 @@ int rowPin[8] = {0,1,2,3,4,5,6,7};
 //Pin connected to ST_CP of 74HC595
 int latchPin = 10;
 //Pin connected to SH_CP of 74HC595
-int clockPin = 13;
+int clockPin = 8;
 ////Pin connected to DS of 74HC595
-int dataPin = 11;
+int dataPin = 9;
 
 // data array for shiftregisters
 byte data[6];
@@ -33,7 +33,7 @@ void initLedScreen() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
 
-  SPI.begin();
+  //SPI.begin();
 
   data[0] = 0b10101010;
   data[1] = 0b01010101;
@@ -61,9 +61,8 @@ void drawLedScreen() {
     
     // shift out 6 bytes of data
     for (int i = 5; i >= 0; i--) {
-      SPI.transfer(data[i]);
       //SPI.transfer(data[i]);
-      // shiftOut(dataPin, clockPin, data[i]);
+      shiftOut(data[i]);
     }
     
     // set current row to high
@@ -74,4 +73,47 @@ void drawLedScreen() {
     delay(1);
     digitalWrite(rowPin[r], LOW);
   }
+}
+
+
+
+void shiftOut(byte data) {
+  // This shifts 8 bits out MSB first, 
+  //on the rising edge of the clock,
+  //clock idles low
+
+  //internal function setup
+  int i=0;
+  int pinState;
+  pinMode(clockPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+
+  //for each bit in the byte myDataOut�
+  //NOTICE THAT WE ARE COUNTING DOWN in our for loop
+  //This means that %00000001 or "1" will go through such
+  //that it will be pin Q0 that lights. 
+  for (i=7; i>=0; i--)  {
+    digitalWrite(clockPin, 0);
+
+    //if the value passed to myDataOut and a bitmask result 
+    // true then... so if we are at i=6 and our value is
+    // %11010100 it would the code compares it to %01000000 
+    // and proceeds to set pinState to 1.
+    if ( data & (1<<i) ) {
+      pinState= 1;
+    }
+    else {  
+      pinState= 0;
+    }
+
+    //Sets the pin to HIGH or LOW depending on pinState
+    digitalWrite(dataPin, pinState);
+    //register shifts bits on upstroke of clock pin  
+    digitalWrite(clockPin, 1);
+    //zero the data pin after shift to prevent bleed through
+    digitalWrite(dataPin, 0);
+  }
+
+  //stop shifting
+  digitalWrite(clockPin, 0);
 }

@@ -20,13 +20,14 @@ void setupSerial() {
 
 void setup() {
   //setupSerial();
+  setupServer();
   initLedScreen();
 
   //setAll(1);
 
   //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
   //readResponse(1);
-  writeText("Penis");
+  writeText("Droogee!");
 
   //setupLEDTest();
 }
@@ -38,12 +39,13 @@ void setup() {
 int counter = 0;
 
 void loop() {
+  serverLoop();
   drawLedScreen();
-  counter++;
-  if (counter >= 50) {
+  //counter++;
+  /*if (counter >= 50) {
     shiftTextLeft();
     counter -= 50;
-  }
+  }*/
   
 }
 
