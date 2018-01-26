@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------------
+/*// -----------------------------------------------------------------------------
 //
 // In this file you will find methods to control the internet connection of the arduino
 // and to get data from the internet conveniantly.
@@ -24,7 +24,7 @@ char* request;// = "GET website/pixelinfo_horizontal.txt";
 int port = 8000;
 
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 0, 177);
+IPAddress ip(192, 168, 1, 3);
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
@@ -53,7 +53,7 @@ void connectToServer(char* serverIp, int serverPort, char* serverRequest) {
 // mode defines how the incoming data is handled
 // mode = 0 : pixel data read separately (vertical)
 // mode = 1 : pixel data read separately (horizontal)
-// mode = 2 : characters interpreted as value of led matrix column
+// mode = 2 : characters interpreted as value of led matrix row
 // mode = 3 : characters are put into led matrix as whole multi-line letters
 
 void readResponse(int mode) {
@@ -240,4 +240,4 @@ void printInternetResponse() {
     while (true);
   }
 }
-
+*/

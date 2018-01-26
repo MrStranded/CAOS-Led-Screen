@@ -12,13 +12,17 @@ const int screenWidth = 48;
 // defines the width of the printed chars
 // does not affect the data from chars.ino, only the character distribution on the screen (default = 5)
 
-const int characterWidth = 6;
+const int characterWidth = 5; // should not be necessary anymore (see chars.ino getCharacterWidth)
 
 // this array holds the data of the pixels
 // each char corresponds to a column of the screen
 // DO NOT access pixels[] outside of this file!
 
 char pixels[screenWidth] = ""; // "" initializes the array with zeros
+
+// remembers the current frame in the movie
+
+int movieFrame = 0;
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -30,12 +34,58 @@ void initScreen() {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
+// loads next frame into pixels array
+
+void loadNextMovieFrame() {
+  fillNextFrame(pixels,movieFrame);
+  movieFrame++;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// this method requires the pointer to a byte array with length 6 and the number of the row that's being requested
+// it then fills the array with the bits from the requested row
+
+byte fillRow(byte *rowBytes, int row) {
+  for (int b=0; b<6; b++) { // b counts in which byte we want to put the pixel data
+    rowBytes[b] = 0; // clear byte
+    
+  
+    for (int i=0; i<8; i++) { // i counts the current bit that we're interested in
+      int x = b*8 + i; // x is the coordinate of the pixel we want
+
+      int power = getPixel(x,7-row);
+      power = power<<(7-i); // we have to shift the data
+
+      rowBytes[b] = rowBytes[b] | power; // this adds a 1 or 0 into the current slot
+    }
+  }
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// shifts the data of the whole screen to the left
+
+void shiftTextLeft() {
+  char firstRow = pixels[0];
+  
+  for (int x=0; x<screenWidth-1; x++) {
+    pixels[x] = pixels[x+1];
+  }
+
+  pixels[screenWidth-1] = firstRow; // feed the data from the front back in in the back
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
 // writes given char into specified position on screen
 
 void writeChar(char c, int position) {
   if (position < 0) { position = 0; }
   char* pixelData = getPixelsFromChar(c);
-  for (int i=0; i<5; i++) {
+  int width = getCharacterWidth(c);
+  
+  for (int i=0; i<width; i++) {
     if (i+position < screenWidth) {
       pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
     }
@@ -55,9 +105,11 @@ void writeCharIntoSlot(char c, int slot) {
 // writes text into the led screen, beginning from the left
 
 void writeText(char* text) {
+  int pos = 0;
   int i = 0;
   while (text[i] != 0) {
-    writeCharIntoSlot(text[i],i);
+    writeChar(text[i],pos);
+    pos += getCharacterWidth(text[i]) + 1; // + 1 is for the space between letters
     i++;
   }
 }
@@ -143,7 +195,7 @@ void debugScreen() {
       if (power == 0) {
         Serial.print(".");
       } else {
-        Serial.print("x");
+        Serial.print("#");
       }
     }
     Serial.println("");

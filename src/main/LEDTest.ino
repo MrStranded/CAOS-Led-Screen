@@ -7,18 +7,20 @@
  * LEDs attached to each of the outputs of the shift register
 
  */
+
+ /*
 //Pin connected to ST_CP of 74HC595
-int latchPin = 8;
+int latchPin = 11;
 //Pin connected to SH_CP of 74HC595
-int clockPin = 12;
+int clockPin = 9;
 ////Pin connected to DS of 74HC595
-int dataPin = 11;
+int dataPin = 10;
 
-int row1 = 6;
-int row2 = 7;
-int lowPin = 5; 
+int row1 = 5;
+int row2 = 6;
+int lowPin = 4; 
 
-int rowPin = 9;
+int rowPin = 7;
 
 //holders for infromation you're going to pass to shifting function
 byte data;
@@ -137,5 +139,5 @@ void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
 
   //stop shifting
   digitalWrite(myClockPin, 0);
-}
+}*/
 

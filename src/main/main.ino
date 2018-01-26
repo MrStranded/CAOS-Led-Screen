@@ -3,6 +3,10 @@
 #define CONNECTIONSTATE 0
 #define WAITINGSTATE 1
 
+// delay between frames in miliseconds
+
+#define LEDFRAMEDELAY 10
+
 // %%%%%%%%%%%%%%%%%%%%%
 
 // setup of the Serial port used for debugging
@@ -15,19 +19,34 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  setupSerial();
+  //setupSerial();
+  setupServer();
+  initLedScreen();
 
-  connectToServer("192.168.1.113",8000,"GET website/pixelinfo_horizontal.txt");
-  readResponse(1);
+  //setAll(1);
+
+  //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
+  //readResponse(1);
+  writeText("Droogee!");
+
+  //setupLEDTest();
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
 
 // main loop of the program
 
+int counter = 0;
+
 void loop() {
-  debugScreen();
-  while(1){}
+  serverLoop();
+  drawLedScreen();
+  //counter++;
+  /*if (counter >= 50) {
+    shiftTextLeft();
+    counter -= 50;
+  }*/
+  
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
