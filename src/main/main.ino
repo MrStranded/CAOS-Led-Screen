@@ -41,11 +41,11 @@ int counter = 0;
 void loop() {
   //serverLoop();
   drawLedScreen();
-  //counter++;
-  /*if (counter >= 50) {
+  counter++;
+  if (counter >= 50) {
     shiftTextLeft();
     counter -= 50;
-  }*/
+  }
   
 }
 

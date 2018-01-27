@@ -23,7 +23,7 @@ void setupServer() {
     Ethernet.begin(mac, ip, gateway, subnet);
     server.begin();
     //clearScreen();
-    writeText("server");
+    writeText("JAHUIII");
     Serial.println("Server set up at");
     Serial.println(Ethernet.localIP());
 }
