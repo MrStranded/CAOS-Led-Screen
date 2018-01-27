@@ -13,16 +13,17 @@
 
 void setupSerial() {
   Serial.begin(9600);
+  delay(1);
   Serial.flush();
 }
 
 // main entry point of the code
 
 void setup() {
-  writeText("Sroogeee!");
-  //setupSerial();
+  //writeText("Sroogeee!");
+  setupSerial();
   setupServer();
-  initLedScreen();
+  //initLedScreen();
 
   //setAll(1);
 
@@ -39,14 +40,15 @@ void setup() {
 int counter = 0;
 
 void loop() {
-  drawLedScreen();
-  
+  //drawLedScreen();
+  serverLoop();
+  /*
   counter++;
   if (counter >= 50) {
     shiftTextLeft();
     serverLoop();
     counter -= 50;
-  }
+  }*/
   
 }
 
