@@ -3,6 +3,10 @@
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 130); // Arduino IP Add
+byte gateway[] = {192, 186,1,1};
+byte subnet[] = {255,255,255,0};
+
+
 EthernetServer server(80); // Web server
 
 // Http data
@@ -17,10 +21,12 @@ void setupServer() {
     pinMode(3, OUTPUT); // Set Pin 3 to OUTPUT Mode
     Serial.print("Ready...");
     //
-    Ethernet.begin(mac, ip);
+    Ethernet.begin(mac, ip, gateway, subnet);
     server.begin();
+    writeText("server");
     Serial.println("Server set up at");
     Serial.println(Ethernet.localIP());
+    writeText(Ethernet.localIP());
 }
 
 void serverLoop() {

@@ -19,6 +19,7 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
+  writeText("Droogeee!");
   //setupSerial();
   setupServer();
   initLedScreen();
@@ -27,7 +28,6 @@ void setup() {
 
   //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
   //readResponse(1);
-  writeText("Droogee!");
 
   //setupLEDTest();
 }

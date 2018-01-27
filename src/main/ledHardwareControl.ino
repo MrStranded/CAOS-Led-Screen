@@ -8,10 +8,10 @@
 #include <SPI.h>
 
 // pins 1 to 8 : row 1 to 8
-int rowPin[8] = {0,1,2,3,4,5,6,7};
+int rowPin[8] = {A5,A4,2,3,A0,5,6,7};
 
 //Pin connected to ST_CP of 74HC595
-int latchPin = 10;
+int latchPin = A1;
 //Pin connected to SH_CP of 74HC595
 int clockPin = 8;
 ////Pin connected to DS of 74HC595
