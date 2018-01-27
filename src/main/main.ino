@@ -19,7 +19,7 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  writeText("Droogeee!");
+  writeText("Sroogeee!");
   //setupSerial();
   setupServer();
   initLedScreen();
@@ -39,7 +39,7 @@ void setup() {
 int counter = 0;
 
 void loop() {
-  serverLoop();
+  //serverLoop();
   drawLedScreen();
   //counter++;
   /*if (counter >= 50) {

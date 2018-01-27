@@ -18,15 +18,14 @@ String CONTENT_LENGTH_TXT = "Content-Length: ";
 void setupServer() {
     // put your setup code here, to run once:
     Serial.begin(9600);
-    pinMode(3, OUTPUT); // Set Pin 3 to OUTPUT Mode
     Serial.print("Ready...");
     //
     Ethernet.begin(mac, ip, gateway, subnet);
     server.begin();
+    //clearScreen();
     writeText("server");
     Serial.println("Server set up at");
     Serial.println(Ethernet.localIP());
-    writeText(Ethernet.localIP());
 }
 
 void serverLoop() {

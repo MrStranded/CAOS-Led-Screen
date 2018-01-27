@@ -105,7 +105,7 @@ void writeCharIntoSlot(char c, int slot) {
 // writes text into the led screen, beginning from the left
 
 void writeText(char* text) {
-  //setAll(0);
+  clearScreen();
   int pos = 0;
   int i = 0;
   while (text[i] != 0) {

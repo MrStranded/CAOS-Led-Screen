@@ -8,12 +8,18 @@
 
 int getCharacterWidth(char cIn) {
   switch(cIn) {
+    case 'e':
+      return 4;
     case 'i':
       return 1;
+    case 'r':
+      return 3;
     case 's':
       return 3;
+    case 'v':
+      return 3;
   }
-  return 4;
+  return 5;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -167,10 +173,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 'v':
-      c[0] = 0b00000000;
-      c[1] = 0b00011100;
-      c[2] = 0b00100000;
-      c[3] = 0b00011100;
+      c[0] = 0b00011100;
+      c[1] = 0b00100000;
+      c[2] = 0b00011100;
+      c[3] = 0b00000000;
       c[4] = 0b00000000;
       break;
     case 'w':
@@ -635,6 +641,7 @@ char* getPixelsFromChar(char cIn) {
       c[2] = 0b10000001;
       c[3] = 0b10000001;
       c[4] = 0b11111111;
+      Serial.println(cIn);
       break;
   }
   return c;
