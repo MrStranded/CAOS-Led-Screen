@@ -46,27 +46,30 @@ void initLedScreen() {
 void drawLedScreen() {
   // for each row
   for (int r = 0; r < 8; r++) {
-    // ground latchPin while transmitting data
-    digitalWrite(latchPin, LOW); // disable shift-register output
-    // delete registers
-    digitalWrite(dataPin, LOW);
-    digitalWrite(clockPin, LOW);
-    
     // get data
     fillRow(data, r);
+
+    // ground latchPin while transmitting data
+    // and disable output
+    digitalWrite(latchPin, LOW);
     
     // shift out 6 bytes of data
     for (int i = 5; i >= 0; i--) {
       shiftOut(data[i]);
     }
     
-    // set current row to high
-    digitalWrite(rowPin[r], HIGH);
     // latchpin no longer needs to listen for information
     // set shift register output to shifted data
     digitalWrite(latchPin, HIGH);
+    // wait for rest charge at register output to go away
+    delayMicroseconds(10);
+    // set current row to high
+    digitalWrite(rowPin[r], HIGH);
+
     // display current row [ms]
     delay(1);
+
+    // diable rowPin
     digitalWrite(rowPin[r], LOW);
   }
 }
@@ -98,4 +101,5 @@ void shiftOut(byte data) {
 
   //stop shifting
   digitalWrite(clockPin, 0);
+  digitalWrite(dataPin, 0);
 }
