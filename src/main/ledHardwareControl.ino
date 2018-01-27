@@ -62,7 +62,7 @@ void drawLedScreen() {
     // set shift register output to shifted data
     digitalWrite(latchPin, HIGH);
     // wait for rest charge at register output to go away
-    delayMicroseconds(10);
+    delayMicroseconds(50);
     // set current row to high
     digitalWrite(rowPin[r], HIGH);
 
