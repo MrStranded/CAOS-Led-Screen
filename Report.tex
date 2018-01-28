@@ -13,7 +13,7 @@
      \captioncitation\par
    \fi
    #1#2#3\par}
-\newcommand*\setcaptioncitation[1]{\def\captioncitation{\textit{Source:}~#1}}
+\newcommand*\setcaptioncitation[1]{\def\captioncitation{\textit{Quelle:}~#1}}
 \let\captioncitation\relax
 \captionsetup{format=citation,justification=centering}
 
@@ -24,9 +24,8 @@
 
 \section{Einleitung}
 
-Das Ziel unserer Gruppe war, eine LED Bank zu bauen. Diese besteht aus 48x8 grünen LEDs, welche als Pixel fungieren. Die LED Bank soll sich mit dem Internet verbinden können und Pixel Daten von dort entnehmen und anzeigen können. Was auch möglich sein soll, ist, einfach kurze Texte anzuzeigen und von rechts nach links scrollen zu lassen.\\
-Die Vision ist, diese LED Bank im Zimmer aufhängen oder hinstellen zu können und darauf verschiedenste Informationen darstellen zu können. Ursprünglich waren Anwendungen wie eine Uhr oder eine Wetterangabe geplant, oder sogar kleine 48x8 Pixel Filmchen.\\
-Es gibt mehrere Gründe, weshalb wir uns vorrangig für eine zweidimensionale LED Konstellation entschieden haben, anstatt für eine dreidimensionale. Einerseits können wir so gewohnt konventionell Text darstellen und zweitens versprachen wir uns davon eine wesentlich einfachere Verdrahtung. Das Hauptproblem so viele LEDs überhaupt mit dem Arduino anzusteuern haben wir so aber nicht umgangen.\\
+Das Ziel unserer Gruppe war, eine LED Bank zu bauen. Diese besteht aus 48x8 grünen LEDs, welche als Pixel fungieren. Darauf soll man kurze Texte anzeigen können, welche von rechts nach links scrollen. Die LED Bank soll sich mit dem Internet verbinden können und Pixeldaten von dort entnehmen und anzeigen.\\
+Die Vision ist, diese LED Bank im Zimmer aufhängen oder hinstellen zu können und darauf verschiedenste Informationen darzustellen. Es sind auch Anwendungen wie eine Uhr, eine Wetterangabe geplant oder sogar kleine 48x8 Pixel Filmchen.\\
 
 \section{Hauptteil}
 
@@ -37,8 +36,8 @@ Es gibt mehrere Gründe, weshalb wir uns vorrangig für eine zweidimensionale LE
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
 (Bild)\\\\
 
-Die 384 LEDs befinden sich verteilt auf zwei Steckbrettern. Die acht Reihen der Bank werden direkt vom Arduino angesprochen. Die 48 Kolonnen steuern wir über drei Pins des Arduinos mittels Shift Registern. Ein Shift Register hat jeweils acht Output Pins, weshalb wir insgesamt sechs Shift Register benutzen, welche in Reihe geschaltet sind.\\
-Wir erreichen die Darstellung eines komplexen Pixelmusters, indem wir jeweils einen Pin bei den acht Reihen einschalten und die anderen ausschalten und dann die Pixeldaten der Zeile in die Shift Register einfüttern. So wird jeweils eine horizontale Linie dargestellt. Diese lassen wir einen kurzen Moment leuchten und gehen dann zur nächsten Zeile über. Wenn wir alle Zeilen dargestellt haben, haben wir ein Frame 'gezeichnet'. Mit einer genug schnellen Taktrate ist das so entstehende Flimmern auch kein grosses Problem mehr.\\
+Die 384 LEDs befinden sich verteilt auf zwei Steckbrettern. Die acht Reihen der Bank werden direkt vom Arduino angesprochen. Die 48 Kolonnen steuern wir über drei Pins des Arduinos mittels Schieberegister. Ein Schieberegister hat jeweils acht Output Pins, weshalb wir insgesamt sechs davon benutzen, welche in Reihe geschaltet sind.\\
+Wir erreichen die Darstellung eines komplexen Pixelmusters, indem wir jeweils die Pixeldaten der Zeile in die Schieberegister einfüttern und dann den dazugehörigen Pin einschalten. So wird jeweils eine horizontale Linie dargestellt. Diese lassen wir einen kurzen Moment leuchten und gehen dann zur nächsten Zeile über. Wenn wir alle Zeilen dargestellt haben, haben wir ein Frame 'gezeichnet'. Mit einer genug schnellen Taktrate wirkt es für das menschliche Auge so, als würden die LEDs dauernd leuchten.\\
 
 \subsubsection{Code}
 
@@ -47,9 +46,9 @@ Um Texte darstellen zu können haben wir viele Bitmuster für die einzelnen Buch
 
 \subsubsection{Webseite}
 
-Auf dem Arduino läuft ein kleiner Webserver, der eine Konsole zur Verfügung stellt. Der Server schickt dem Client HTML Code, den der Browser dann in die sichtbare Website umwandelt. Über ein Eingabefeld kann Text an den Server übergeben werden, der dann auf der LED-Matrix angezeigt wird. Über Knöpfe können Requests für das Wetter und die Uhrzeit ausgeführt werden, dessen Resultat dann ebenfalls angezeigt wird.
+Auf dem Arduino läuft ein kleiner Webserver, der eine Konsole zur Verfügung stellt. Der Server schickt dem Client HTML Code, den der Browser dann in die sichtbare Website umwandelt. Über ein Eingabefeld kann Text an den Server übergeben werden, der dann auf der LED-Matrix angezeigt wird.
 
-\subsection{technische Details}
+\subsection{Technische Details}
 
 \subsubsection{Display}
 
@@ -64,9 +63,9 @@ Wir haben für unsere Anzeige folgende Bauteile verwendet:
 \item Kondensator 1$\mu$F
 \end{itemize}
 
-Da die LED's mit 20mA betrieben werden sollte und  \[R = 5V/20mA = 250\Omega\] haben wir 220$\Omega$ Widerstände als Vorwiderstand eingebaut. Der Strom wäre leicht höher als 20mA, die 5V des Arduino erreichen jedoch auch nicht ganz die Anzeige aufgrund von Spannungsabfall. Diese Vorwiderstände befinden sich zwischen den Schieberegistern und den LED-Kolumnen. Die Reihen werden direkt über das Arduino angesteuert. Da dieses bei den Output-Pins jedoch nur ca. 40mA gesourced oder gesinkt werden können, wird der ULN2803 dazwischen geschaltet. Diesen kann man bis 500mA und 50V betreiben. Davor wird für jede Reihe ein 3.3k$\Omega$ Widerstand geschaltet, da über die Leitungen vom Arduino nur noch Impulse an den ULN2803 gesendet werden, welche diesen dann zum Schalten bringen. Die ganze Energie kommt also direkt von Ground und 5V und nicht über die Arduino Outputs.
+Da die LED's mit 20mA betrieben werden sollte und  \[R = 5V/20mA = 250\Omega\] haben wir 220$\Omega$ Widerstände als Vorwiderstand eingebaut. Der Strom wäre leicht höher als 20mA, die 5V des Arduino erreichen jedoch auch nicht ganz die Anzeige aufgrund von Spannungsabfall. Diese Vorwiderstände befinden sich zwischen den Schieberegistern und den LED-Kolumnen. Die Reihen werden direkt über das Arduino angesteuert. Da dieses bei den Output-Pins jedoch nur ca. 40mA gesourced oder gesinkt werden können, wird der ULN2803 dazwischen geschaltet. Diesen kann man bis 500mA und 50V betreiben. Davor wird für jede Reihe ein 3.3k$\Omega$ Widerstand geschaltet, da über die Leitungen vom Arduino nur noch Impulse an den ULN2803 gesendet werden, welche diesen dann zum Schalten bringen. Die ganze Energie kommt also direkt von Ground und 5V und nicht über die digitalen Outputs des Arduino.
 
-Um die Schieberegister anzusteuern benötit man bloss drei Verbindungen zum Arduino:
+Auf dem Schieberegister hat man Ground, 5V und die acht Ausgänge. Zusätzlich, um die Schieberegister anzusteuern, benötigt man drei Verbindungen zum Arduino:
 \begin{itemize}
 \item Latch Pin
 \item Clock Pin
@@ -78,28 +77,29 @@ Der Clock Pin bestimmt, wann über den Data Pin die Register beschrieben werden.
 \begin{figure}
 \includegraphics[width=\textwidth]{shiftReg.png}
 \setcaptioncitation{arduinolearning.com/learning/basics/interfacing-74hc595.php}
-\caption{Schema vom 74HC595 mit LED'S am Ausgan}
+\caption{Schema vom 74HC595 mit LEDs am Ausgang}
 \end{figure}
 
 \subsubsection{Code}
 
-Der Code ist in verschiedene Module unterteilt die zusammen die Funktionalität des Produkts gewährleisten.\\
-Das 'main' Modul initialisiert die anderen Module und hält den Mainloop in dem die Frames gezeichnet werden, die Laufschrift geshiftet wird und der Requesthandler arbeitet.\\
-Das Modul 'internetInterface' ist verantworlich für die Internetanbindung unseres Systems. Es besteht aus einem Setup-Modul, dass die physische Verbindung initialisiert und den Server startet und dem Requesthandler. Dieser sendet den Code für das Anzeigen der Webseite und bearbeitet die Eingaben über die Console um den Text zu ändern. 
-Das Modul 'ledInterface' hält den Grafikspeicher, welcher aus einem 48x8 Char-Array besteht in welchem die Lichtzustände der Pixel gespeichert werden. Es enthält ausserdem die Methoden zur Textbearbeitung. Sie ist verantwortlich für das Übersetzen von Usereingaben in die Bitmap sowie das aktualisieren der Lauftschrift. Hier werden Buchstaben in Arrays mit 8-Bit Zahlen umgewandelt.\\
-Das Modul 'chars' hält die ganzen Informationen über die darstellbaren Zeichen. Dies sind einerseits die Bitmap und andererseits die anzuzeigende Breite.\\
-Als letztes gibt es das Modul 'ledHardwareControl'. Es ist verantwortlich für die Anzeige des Grafikspeichers auf der LED-Matrix. Über die Pins des Arduinos werden Reihen und Spalten angersprochen um das gewünschte Frame anzuzeigen. Über ein Untermodul werden die Daten reihenweise in die Schieberegister geshiftet.\\
+Der Code ist in verschiedene Module unterteilt, die zusammen die Funktionalität des Produkts gewährleisten.
+
+Das 'main' Modul initialisiert die restlichen Module und enthält den Mainloop, in dem die Frames gezeichnet werden, die Laufschrift aktualisiert wird und der Server betrieben wird.
+
+Das Modul 'internetInterface' ist verantworlich für die Internetanbindung unseres Systems. Es besteht aus dem Requesthandler und einem Setup-Modul, das die physische Verbindung initialisiert und den Server startet. Der Requesthandler sendet den Code für das Anzeigen der Webseite und bearbeitet die Eingaben, welche über die Console eingehen, um den Text zu ändern.
+
+Das Modul 'ledInterface' hält den Grafikspeicher, welcher aus einem 48x8 Char-Array besteht. Dieses speichert die Lichtzustände der Pixel. Das Modul enthält ausserdem die Methoden zur Textbearbeitung und ist verantwortlich für das Übersetzen von Usereingaben in die Bitmap, sowie das aktualisieren der Laufschrift. Hier werden Buchstaben in Arrays mit 8-Bit Zahlen umgewandelt.
+
+Das Modul 'chars' hält die ganzen Informationen über die darstellbaren Zeichen. Dies sind einerseits die Bitmap und andererseits die anzuzeigende Breite.
+
+Als letztes gibt es das Modul 'ledHardwareControl'. Es ist verantwortlich für die Anzeige des Grafikspeichers auf der LED-Matrix. Über die Pins des Arduinos werden Reihen und Spalten angesprochen um das gewünschte Frame anzuzeigen.
 
 \subsubsection{Webseite}
 
-Auf dem Arduino läuft ein Webserver mit einer Internetseite. Über die IP 192.168.178.42 und Port 80 kann darauf zugegriffen werden. Die Webseite enthält ein Feld um einen neuen Text auf die Anzeige zu laden sowie Buttons um Daten wie Wetter und Uhrzeit anzuzeigen. Der Requesthandler schickt den HTML/CSS Code an den Client. Falls er vom Client einen Request bekommt wird keine Seite gesendet, stattdessen untersucht der Parser die Nachricht und aktualisiert die Anzeige. Falls es sich um das Drücken einer der Buttons handelt, holt sich der Server die Informationen per Request bei der entsprechenden Website. \\
+Auf dem Arduino läuft ein Webserver mit einer Internetseite. Über die IP 192.168.178.42 und den Port 80 kann darauf zugegriffen werden. Die Webseite enthält ein Feld, um einen neuen Text auf die Anzeige zu laden. Der Requesthandler schickt den HTML/CSS Code an den Client. Falls er vom Client einen Request bekommt, wird keine Seite gesendet. Stattdessen untersucht der Parser die Nachricht und aktualisiert die Anzeige.
 
 \section{Zusammenfassung}
 
-Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Was schwieriger war als erwartet, war der Umgang mit den Shift Registern, welche sich Anfangs nie so verhalten haben wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Da wir anfangs alle nicht so erfahren waren im Löten, mussten wir zuerst etwas den Einstieg finden. Dies führte dazu, dass wir mehrere Lötstellen im Nachhinein reparieren mussten. Die Einschränkung auf Http macht es schwierig auf viele moderne Webseiten zuzugreifen.  Der Schwerpunkt lag eher auf Seiten der Hardware, da wir alles selbst zusammenstellten und verlöteten. Schlussendlich war es ein tolles Gefühl, als unsere Hardware das tat, was sie sollte und alles funktionierte. Softwaretechnisch waren wir an einen Punkt gekommen, dass wir es so präsentieren konnten. Jedoch hatten wir alle noch weitere Ideen, was man damit machen kann und haben somit noch weiter programmiert. Daraus enstand die Möglichkeit über Knopfdruck auf dem Arduino Server Wetterinformationen auf dem Display anzuzeigen.
-
-\section{Quellen}
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
+Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Da wir anfangs alle nicht so erfahren waren im Löten, mussten wir zuerst etwas den Einstieg finden. Dies führte dazu, dass wir mehrere Lötstellen im Nachhinein reparieren mussten. Schwieriger als erwartet, war der Umgang mit den Schieberegistern, welche sich Anfangs nie so verhalten haben, wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Der Schwerpunkt lag eher auf Seiten der Hardware, da wir alles selbst zusammenstellten und verlöteten. Schlussendlich war es ein tolles Gefühl, als unsere Hardware das tat was sie sollte. Auch Softwaretechnisch haben wir unser Ziel erreicht und planen jetzt schon weitere Funktionen.
 
 \end{document}

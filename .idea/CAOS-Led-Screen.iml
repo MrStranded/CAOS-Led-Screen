@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Http Request Handler" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.5" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
