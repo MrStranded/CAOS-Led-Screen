@@ -1,21 +1,22 @@
 /*
   Web client
 
- This sketch connects to a website (http://www.google.com)
- using an Arduino Wiznet Ethernet shield.
+  This sketch connects to a website (http://www.google.com)
+  using an Arduino Wiznet Ethernet shield.
 
- Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
+  Circuit:
+   Ethernet shield attached to pins 10, 11, 12, 13
 
- created 18 Dec 2009
- by David A. Mellis
- modified 9 Apr 2012
- by Tom Igoe, based on work by Adrian McEwen
+  created 18 Dec 2009
+  by David A. Mellis
+  modified 9 Apr 2012
+  by Tom Igoe, based on work by Adrian McEwen
 
- */
+*/
 
 #include <SPI.h>
 #include <Ethernet.h>
+#include <ArduinoJson.h>
 
 // Enter a MAC address for your controller below.
 // Newer Ethernet shields have a MAC address printed on a sticker on the shield
@@ -32,6 +33,8 @@ IPAddress ip(192, 168, 0, 177);
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
 EthernetClient client;
+
+String jsonData;
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -51,35 +54,69 @@ void setup() {
   Serial.println("connecting...");
 
   // if you get a connection, report back via serial:
-  if (client.connect(server, 80)) {
+  if (client.connect("www.jsontest.com", 80)) {
     Serial.println("connected");
     // Make a HTTP request:
-    client.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
-    client.println("Host: http://api.openweathermap.org");
+//    client.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
+//    client.println("Host: http://api.openweathermap.org");
+client.println("Host: http://ip.jsontest.com");
     client.println("Connection: close");
     client.println();
   } else {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
+
+
+  /*
+    char json[] = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+
+    StaticJsonBuffer<200> jsonBuffer;
+
+    JsonObject& root = jsonBuffer.parseObject(json);
+
+    const char* sensor = root["sensor"];
+    long time          = root["time"];
+    double latitude    = root["data"][0];
+    double longitude   = root["data"][1];
+  */
 }
 
 void loop() {
+
   // if there are incoming bytes available
   // from the server, read them and print them:
   if (client.available()) {
     char c = client.read();
-    Serial.print(c);
+    jsonData.concat(c);
   }
-
-  // if the server's disconnected, stop the client:
   if (!client.connected()) {
+    // if the server's disconnected, stop the client:
+
     Serial.println();
     Serial.println("disconnecting.");
-    client.stop();
+
+    String jj = "{\"lol\":[\"bitches\", \"snitches\"]}";
+
+    //Serial.println(jsonData);
+    Serial.print(jsonData);
+
+
+    StaticJsonBuffer<11000> jsonBuffer;
+    JsonObject& root = jsonBuffer.parseObject(jsonData, 10);
+    Serial.println("testtest");
+
+    if (root.success()) {
+      Serial.println("yeah boy!");
+      const char* s = root["ip"];
+      Serial.println(s);
+    } else {
+      Serial.println("fuuuuu");
+    }
+
 
     // do nothing forevermore:
-    while (true);
+    while (true){};
   }
 }
 
