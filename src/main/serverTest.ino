@@ -6,6 +6,8 @@ byte ip[] = {192, 168, 178, 42};
 byte gateway[] = {192, 186,178,1};
 byte subnet[] = {255,255,255,0};
 
+String request;
+
 
 EthernetServer server(80); // Web server
 
@@ -37,12 +39,17 @@ void serverLoop() {
   EthernetClient client = server.available(); 
   if (client) { 
     Serial.println("new client"); 
+
+    request = "";
+    
     // an http request ends with a blank line 
     boolean currentLineIsBlank = true; 
     while (client.connected()) { 
       if (client.available()) { 
         char c = client.read(); 
         Serial.write(c); 
+        request += c;
+        
         // if you've gotten to the end of the line (received a newline 
         // character) and the line is blank, the http request has ended, 
         // so you can send a reply 
@@ -52,16 +59,20 @@ void serverLoop() {
           client.println("Content-Type: text/html"); 
           client.println("Connection: close"); 
           // the connection will be closed after completion of the response 
-          client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
+          //client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
           client.println(); 
           client.println("<!DOCTYPE HTML>"); 
           client.println("<html lang=\"en\">"); 
           client.println("<head>"); 
-          client.println("<meta charset=\"utf-8\">"); 
-          client.println("<title>cactus.io</title>"); 
+          client.println("<meta charset=\"utf-8\">");
           client.println("</head>"); 
           client.println("<body>"); 
-          client.print("fuck yes, im the server");  
+          client.println("fuck yes, im the server");
+          client.print("<br/><br/>");
+          //client.println("<input>Enter text here</input>");
+          client.println("<a href=\"http://192.168.178.42?penis\">");
+          client.println("<input type=\"button\" value=\"Send text\"/>");
+          client.println("</a>");
           client.println("</body>"); 
           client.println("</html>"); 
           break; 
@@ -79,6 +90,8 @@ void serverLoop() {
     delay(1); 
     // close the connection: 
     client.stop(); 
-    Serial.println("client disconnected"); 
+    Serial.println("client request:");
+    Serial.println(request);
+    Serial.println("client disconnected");
   }
 }
