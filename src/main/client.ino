@@ -1,4 +1,4 @@
-#include <SPI.h>
+/*#include <SPI.h>
 #include <Ethernet.h>
 #include <stdio.h>
 
@@ -41,4 +41,4 @@ void clientLoop() {
   }
   Serial.print(str);
   requestClient.stop();
-}
+}*/
