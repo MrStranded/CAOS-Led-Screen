@@ -6,6 +6,17 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{caption}
+
+\DeclareCaptionFormat{citation}{%
+   \ifx\captioncitation\relax\relax\else
+     \captioncitation\par
+   \fi
+   #1#2#3\par}
+\newcommand*\setcaptioncitation[1]{\def\captioncitation{\textit{Source:}~#1}}
+\let\captioncitation\relax
+\captionsetup{format=citation,justification=centering}
+
 \author{Manuel Rickli, Lukas Stöckli, Michael Plüss}
 \title{LED Bank}
 \begin{document}
@@ -62,9 +73,13 @@ Um die Schieberegister anzusteuern benötit man bloss drei Verbindungen zum Ardu
 \item Data Pin
 \end{itemize}
 
-Der Clock Pin bestimmt, wann über den Data Pin die Register beschrieben werden. Nur wenn dieser auf HIGH ist, können die im Data Pin gespeicherten Bytes gesendet werden. Ist der Latch Pin auf HIGH, so werden die im Register gespeicherten Reihen mit Spannung versorgt. Deshalb muss vor dem Neubeschreiben dieser auf LOW gesetzt werden. In unserem Falle geben wir mit jedem shiftOut() genau ein Byte mit. Dieses wird immer in dem ersten Register gespeichert. Ist es schon beschrieben, so wird dieses Byte an das nächste Register weitergegeben. Wir rufen also sechs mal shiftOut() auf und geben als erstes Byte die Information für das sechste Register mit.
+Der Clock Pin bestimmt, wann über den Data Pin die Register beschrieben werden. Nur wenn dieser auf HIGH geschaltet wird, können die im Data Pin gespeicherten Bytes gesendet werden. Ist der Latch Pin auf HIGH, so werden die im Register gespeicherten Reihen mit Spannung versorgt. Deshalb muss vor dem Neubeschreiben dieser auf LOW gesetzt werden. In unserem Falle geben wir mit jedem shiftOut() genau ein Byte mit. Dieses wird immer in dem ersten Register gespeichert. Ist es schon beschrieben, so wird dieses Byte an das nächste Register weitergegeben. Wir rufen also sechs mal shiftOut() auf und geben als erstes Byte die Information für das sechste Register mit.
 
+\begin{figure}
 \includegraphics[width=\textwidth]{shiftReg.png}
+\setcaptioncitation{arduinolearning.com/learning/basics/interfacing-74hc595.php}
+\caption{Schema vom 74HC595 mit LED'S am Ausgan}
+\end{figure}
 
 \subsubsection{Code}
 
@@ -81,7 +96,7 @@ Auf dem Arduino läuft ein Webserver mit einer Internetseite. Über die IP 192.1
 
 \section{Zusammenfassung}
 
-Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Was schwieriger war als erwartet, war der Umgang mit den Shift Registern, welche sich Anfangs nie so verhalten haben wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Die Einschränkung auf Http macht es schwierig auf viele moderne Webseiten zuzugreifen.  Der Schwerpunkt lag eher auf Seiten der Hardware, da wir alles selbst zusammenstellten und verlöteten. Schlussendlich war es ein tolles Gefühl, als unsere Hardware das tat, was sie sollte und alles funktionierte. Softwaretechnisch waren wir an einen Punkt gekommen, dass wir es so präsentieren konnten. Jedoch hatten wir alle noch weitere Ideen, was man damit machen kann und haben somit noch weiter programmiert. Daraus enstand die Möglichkeit über Knopfdruck auf dem Arduino Server Wetterinformationen auf dem Display anzuzeigen.
+Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Was schwieriger war als erwartet, war der Umgang mit den Shift Registern, welche sich Anfangs nie so verhalten haben wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Da wir anfangs alle nicht so erfahren waren im Löten, mussten wir zuerst etwas den Einstieg finden. Dies führte dazu, dass wir mehrere Lötstellen im Nachhinein reparieren mussten. Die Einschränkung auf Http macht es schwierig auf viele moderne Webseiten zuzugreifen.  Der Schwerpunkt lag eher auf Seiten der Hardware, da wir alles selbst zusammenstellten und verlöteten. Schlussendlich war es ein tolles Gefühl, als unsere Hardware das tat, was sie sollte und alles funktionierte. Softwaretechnisch waren wir an einen Punkt gekommen, dass wir es so präsentieren konnten. Jedoch hatten wir alle noch weitere Ideen, was man damit machen kann und haben somit noch weiter programmiert. Daraus enstand die Möglichkeit über Knopfdruck auf dem Arduino Server Wetterinformationen auf dem Display anzuzeigen.
 
 \section{Quellen}
 
