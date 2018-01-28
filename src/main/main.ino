@@ -20,7 +20,6 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  writeText("Droogeee!");
   setupSerial();
   setupServer();
   initLedScreen();
@@ -31,6 +30,15 @@ void setup() {
   //readResponse(1);
 
   //setupLEDTest();
+
+  // show movie as setup
+  for (int i = 0; i < 25*50; i++) {
+    if (i % 50 == 0) {
+      loadNextMovieFrame();
+    }
+    drawLedScreen();  
+  }
+  writeText("Welcome");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -42,10 +50,11 @@ int counter = 0;
 void loop() {
   drawLedScreen();
   counter++;
-  if (counter >= 50) {
+  if (counter % 50 == 0) {
     shiftTextLeft();
+  }
+  if (counter % 200 == 0) {
     serverLoop();
-    counter -= 50;
   }
   
 }

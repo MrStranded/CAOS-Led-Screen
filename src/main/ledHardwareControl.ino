@@ -67,7 +67,7 @@ void drawLedScreen() {
     digitalWrite(rowPin[r], HIGH);
 
     // display current row [ms]
-    delay(1);
+    delayMicroseconds(1200);
 
     // diable rowPin
     digitalWrite(rowPin[r], LOW);
