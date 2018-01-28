@@ -168,6 +168,7 @@ void parseRequest(String *request) {
   } else if (start == 'w') {
     char message = "kalt";
   } else return;
+  // else if for movie (disable shifteText, reenable after movie
    */
   int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
   if (!(request->charAt(startIndex + 1) == '?')) {
