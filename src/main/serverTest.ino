@@ -104,21 +104,20 @@ void serverLoop() {
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
           // input form
           client.println("<div>");
-          client.println("<form>");
           client.println("<h4>Enter Text</h4>");
+          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<a href=\"http://192.168.178.42\"><br/>");
           client.println("<input type=\"submit\" value=\"Submit\"/>");
-          client.println("</a></form></div>");
+          client.println("</form></div>");
           // end of input form
           /*
           // buttons form
-          client.println("<div><form>");
+          client.println("<div>");
           client.println("<h4>Functions</h4>");
-          client.println("<a href=\"http://192.168.178.42/time\"><br/>");
-          client.println("<input type=\"submit\" value=\"Time\"/></a>");
-          client.println("<a href=\"http://192.168.178.42/weather\"><br/>");
-          client.println("<input type=\"submit\" value=\"Weather\"/></a>");
+          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
+          client.println("<input type=\"submit\" name=\"time\"></form>");
+          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
+          client.println("<input type=\"submit\" name=\"weather\"></form>");
           client.println("</form></div>");
           // end of buttons form
           */
