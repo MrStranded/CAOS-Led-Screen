@@ -41,7 +41,27 @@ Auf dem Arduino läuft ein kleiner Webserver, der eine Konsole zur Verfügung st
 
 \subsubsection{Display}
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO!!!!!\\
+Wir haben für unsere Anzeige folgende Bauteile verwendet:
+
+\begin{itemize}
+\item LED 20mA, 2,2V
+\item Widerstand 3.3k$\Omega$
+\item Widerstand 220$\Omega$
+\item Schieberegister 74HC595
+\item Transistor Array ULN2803
+\item Kondensator 1$\mu$F
+\end{itemize}
+
+Da die LED's mit 20mA betrieben werden sollte und  \[R = 5V/20mA = 250\Omega\] haben wir 220$\Omega$ Widerstände als Vorwiderstand eingebaut. Der Strom wäre leicht höher als 20mA, die 5V des Arduino erreichen jedoch auch nicht ganz die Anzeige aufgrund von Spannungsabfall. Diese Vorwiderstände befinden sich zwischen den Schieberegistern und den LED-Kolumnen. Die Reihen werden direkt über das Arduino angesteuert. Da dieses bei den Output-Pins jedoch nur ca. 40mA gesourced oder gesinkt werden können, wird der ULN2803 dazwischen geschaltet. Diesen kann man bis 500mA und 50V betreiben. Davor wird für jede Reihe ein 3.3k$\Omega$ Widerstand geschaltet, da über die Leitungen vom Arduino nur noch Impulse an den ULN2803 gesendet werden, welche diesen dann zum Schalten bringen. Die ganze Energie kommt also direkt von Ground und 5V und nicht über die Arduino Outputs.
+
+Um die Schieberegister anzusteuern benötit man bloss drei Verbindungen zum Arduino:
+\begin{itemize}
+\item Latch Pin
+\item Clock Pin
+\item Data Pin
+\end{itemize}
+
+Der Clock Pin bestimmt, wann über den Data Pin die Register beschrieben werden. Nur wenn dieser auf HIGH ist, können die im Data Pin gespeicherten Bytes gesendet werden. Ist der Latch Pin auf HIGH, so werden die im Register gespeicherten Reihen mit Spannung versorgt. Deshalb muss vor dem Neubeschreiben dieser auf LOW gesetzt werden. In unserem Falle geben wir mit jedem shiftOut() genau ein Byte mit. Dieses wird immer in dem ersten Register gespeichert. Ist es schon beschrieben, so wird dieses Byte an das nächste Register weitergegeben. Wir rufen also sechs mal shiftOut() auf und geben als erstes Byte die Information für das sechste Register mit.
 
 \subsubsection{Code}
 
