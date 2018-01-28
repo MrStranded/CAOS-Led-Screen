@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \author{Manuel Rickli, Lukas Stöckli, Michael Plüss}
 \title{LED Bank}
 \begin{document}
@@ -62,6 +63,8 @@ Um die Schieberegister anzusteuern benötit man bloss drei Verbindungen zum Ardu
 \end{itemize}
 
 Der Clock Pin bestimmt, wann über den Data Pin die Register beschrieben werden. Nur wenn dieser auf HIGH ist, können die im Data Pin gespeicherten Bytes gesendet werden. Ist der Latch Pin auf HIGH, so werden die im Register gespeicherten Reihen mit Spannung versorgt. Deshalb muss vor dem Neubeschreiben dieser auf LOW gesetzt werden. In unserem Falle geben wir mit jedem shiftOut() genau ein Byte mit. Dieses wird immer in dem ersten Register gespeichert. Ist es schon beschrieben, so wird dieses Byte an das nächste Register weitergegeben. Wir rufen also sechs mal shiftOut() auf und geben als erstes Byte die Information für das sechste Register mit.
+
+\includegraphics[width=\textwidth]{shiftReg.png}
 
 \subsubsection{Code}
 
