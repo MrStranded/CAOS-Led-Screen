@@ -8,12 +8,193 @@
 
 int getCharacterWidth(char cIn) {
   switch(cIn) {
+    //###########
+    // LOWERCASE
+    case 'a':
+      return 4;
+    case 'b':
+      return 4;
+    case 'c':
+      return 4;
+    case 'd':
+      return 4;
+    case 'e':
+      return 4;
+    case 'f':
+      return 4;
+    case 'g':
+      return 4;
+    case 'h':
+      return 4;
     case 'i':
       return 1;
+    case 'j':
+      return 2;
+    case 'k':
+      return 4;
+    case 'l':
+      return 2;
+    case 'm':
+      return 5;
+    case 'n':
+      return 4;
+    case 'o':
+      return 4;
+    case 'p':
+      return 4;
+    case 'q':
+      return 4;
+    case 'r':
+      return 3;
     case 's':
       return 3;
+    case 't':
+      return 3;
+    case 'u':
+      return 4;
+    case 'v':
+      return 3;
+    case 'w':
+      return 5;
+    case 'x':
+      return 4;
+    case 'y':
+      return 4;
+    case 'z':
+      return 4;
+    //################
+    // UPPERCASE
+    case 'A':
+      return 5;
+    case 'B':
+      return 4;
+    case 'C':
+      return 4;
+    case 'D':
+      return 4;
+    case 'E':
+      return 4;
+    case 'F':
+      return 4;
+    case 'G':
+      return 4;
+    case 'H':
+      return 4;
+    case 'I':
+      return 3;
+    case 'J':
+      return 3;
+    case 'K':
+      return 4;
+    case 'L':
+      return 4;
+    case 'M':
+      return 5;
+    case 'N':
+      return 4;
+    case 'O':
+      return 4;
+    case 'P':
+      return 4;
+    case 'Q':
+      return 4;
+    case 'R':
+      return 4;
+    case 'S':
+      return 4;
+    case 'T':
+      return 5;
+    case 'U':
+      return 4;
+    case 'V':
+      return 5;
+    case 'W':
+      return 5;
+    case 'X':
+      return 5;
+    case 'Y':
+      return 5;
+    case 'Z':
+      return 4;
+    //##############
+    case '0':
+      return 4;
+    case '1':
+      return 3;
+    case '2':
+      return 4;
+    case '3':
+      return 4;
+    case '4':
+      return 4;
+    case '5':
+      return 4;
+    case '6':
+      return 4;
+    case '7':
+      return 4;
+    case '8':
+      return 4;
+    case '9':
+      return 4;
+    // ###############
+    // SPECIAL CHARS
+    case ' ':
+      return 1;
+    // &&&&&&&&&&&&&&&&&&& sentence structure
+    case '.':
+      return 2;
+    case '!':
+      return 2;
+    case '?':
+      return 4;
+    case ':':
+      return 2;
+    case ',':
+      return 2;
+    case ';':
+      return 2;
+    case '-':
+      return 4;
+    case '_':
+      return 5;
+    // &&&&&&&&&&&&&&&&&&& brackets
+    case '(':
+      return 3;
+    case ')':
+      return 3;
+    case '{':
+      return 3;
+    case '}':
+      return 3;
+    case '[':
+      return 3;
+    case ']':
+      return 3;
+    // &&&&&&&&&&&&&&&&&&& math
+    case '+':
+      return 5;
+    case '*':
+      return 3;
+    case '/':
+      return 4;
+    case '=':
+      return 4;
+    case '>':
+      return 3;
+    case '<':
+      return 3;
+    // &&&&&&&&&&&&&&&&&&& other
+    case '\\':
+      return 4;
+    case '~':
+      return 4;
+    case '#':
+      return 5;
+    // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& default
+    default:
+      return 5; 
   }
-  return 4;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -84,9 +265,9 @@ char* getPixelsFromChar(char cIn) {
       c[0] = 0b00111101;
       break;
     case 'j':
-      c[0] = 0b00000000;
-      c[1] = 0b10000000;
-      c[2] = 0b01111101;
+      c[0] = 0b10000000;
+      c[1] = 0b01111101;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
       c[4] = 0b00000000;
       break;
@@ -98,9 +279,9 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 'l':
-      c[0] = 0b00000000;
-      c[1] = 0b00111111;
-      c[2] = 0b00100000;
+      c[0] = 0b00111111;
+      c[1] = 0b00100000;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
       c[4] = 0b00000000;
       break;
@@ -153,11 +334,10 @@ char* getPixelsFromChar(char cIn) {
       c[3] = 0b00000000;
       break;
     case 't':
-      c[0] = 0b00000000;
-      c[1] = 0b00000100;
-      c[2] = 0b00111111;
-      c[3] = 0b00000100;
-      c[4] = 0b00000000;
+      c[0] = 0b00000100;
+      c[1] = 0b00111111;
+      c[2] = 0b00000100;
+      c[3] = 0b00000000;
       break;
     case 'u':
       c[0] = 0b00011100;
@@ -167,10 +347,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 'v':
-      c[0] = 0b00000000;
-      c[1] = 0b00011100;
-      c[2] = 0b00100000;
-      c[3] = 0b00011100;
+      c[0] = 0b00011100;
+      c[1] = 0b00100000;
+      c[2] = 0b00011100;
+      c[3] = 0b00000000;
       c[4] = 0b00000000;
       break;
     case 'w':
@@ -259,11 +439,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case 'I':
-      c[0] = 0b00000000;
-      c[1] = 0b00100001;
-      c[2] = 0b00111111;
-      c[3] = 0b00100001;
-      c[4] = 0b00000000;
+      c[0] = 0b00100001;
+      c[1] = 0b00111111;
+      c[2] = 0b00100001;
+      c[3] = 0b00000000;
       break;
     case 'J':
       c[0] = 0b00110001;
@@ -393,11 +572,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case '1':
-      c[0] = 0b00000000;
-      c[1] = 0b00100010;
-      c[2] = 0b00111111;
-      c[3] = 0b00100000;
-      c[4] = 0b00000000;
+      c[0] = 0b00100010;
+      c[1] = 0b00111111;
+      c[2] = 0b00100000;
+      c[3] = 0b00000000;
       break;
     case '2':
       c[0] = 0b00100110;
@@ -465,18 +643,16 @@ char* getPixelsFromChar(char cIn) {
       break;
     // &&&&&&&&&&&&&&&&&&& sentence structure
     case '.':
-      c[0] = 0b00000000;
+      c[0] = 0b00110000;
       c[1] = 0b00110000;
-      c[2] = 0b00110000;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
-      c[4] = 0b00000000;
       break;
     case '!':
-      c[0] = 0b00000000;
+      c[0] = 0b11011111;
       c[1] = 0b11011111;
-      c[2] = 0b11011111;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
-      c[4] = 0b00000000;
       break;
     case '?':
       c[0] = 0b00000010;
@@ -486,25 +662,22 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case ':':
-      c[0] = 0b00000000;
+      c[0] = 0b00110110;
       c[1] = 0b00110110;
-      c[2] = 0b00110110;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
-      c[4] = 0b00000000;
       break;
     case ',':
-      c[0] = 0b00000000;
-      c[1] = 0b01010000;
-      c[2] = 0b00110000;
+      c[0] = 0b01010000;
+      c[1] = 0b00110000;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
-      c[4] = 0b00000000;
       break;
     case ';':
-      c[0] = 0b00000000;
-      c[1] = 0b01010110;
-      c[2] = 0b00110110;
+      c[0] = 0b01010110;
+      c[1] = 0b00110110;
+      c[2] = 0b00000000;
       c[3] = 0b00000000;
-      c[4] = 0b00000000;
       break;
     case '-':
       c[0] = 0b00001000;
@@ -522,46 +695,40 @@ char* getPixelsFromChar(char cIn) {
       break;
     // &&&&&&&&&&&&&&&&&&& brackets
     case '(':
-      c[0] = 0b00000000;
-      c[1] = 0b00111100;
-      c[2] = 0b01000010;
-      c[3] = 0b10000001;
-      c[4] = 0b00000000;
+      c[0] = 0b00111100;
+      c[1] = 0b01000010;
+      c[2] = 0b10000001;
+      c[3] = 0b00000000;
       break;
     case ')':
-      c[0] = 0b00000000;
-      c[1] = 0b10000001;
-      c[2] = 0b01000010;
-      c[3] = 0b00111100;
-      c[4] = 0b00000000;
+      c[0] = 0b10000001;
+      c[1] = 0b01000010;
+      c[2] = 0b00111100;
+      c[3] = 0b00000000;
       break;
     case '{':
-      c[0] = 0b00000000;
-      c[1] = 0b00011000;
-      c[2] = 0b01111110;
-      c[3] = 0b10000001;
-      c[4] = 0b00000000;
+      c[0] = 0b00011000;
+      c[1] = 0b01111110;
+      c[2] = 0b10000001;
+      c[3] = 0b00000000;
       break;
     case '}':
-      c[0] = 0b00000000;
-      c[1] = 0b10000001;
-      c[2] = 0b01111110;
-      c[3] = 0b00011000;
-      c[4] = 0b00000000;
+      c[0] = 0b10000001;
+      c[1] = 0b01111110;
+      c[2] = 0b00011000;
+      c[3] = 0b00000000;
       break;
     case '[':
-      c[0] = 0b00000000;
-      c[1] = 0b11111111;
-      c[2] = 0b10000001;
-      c[3] = 0b10000001;
-      c[4] = 0b00000000;
-      break;
-    case ']':
-      c[0] = 0b00000000;
+      c[0] = 0b11111111;
       c[1] = 0b10000001;
       c[2] = 0b10000001;
-      c[3] = 0b11111111;
-      c[4] = 0b00000000;
+      c[3] = 0b00000000;
+      break;
+    case ']':
+      c[0] = 0b10000001;
+      c[1] = 0b10000001;
+      c[2] = 0b11111111;
+      c[3] = 0b00000000;
       break;
     // &&&&&&&&&&&&&&&&&&& math
     case '+':
@@ -572,11 +739,10 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00001000;
       break;
     case '*':
-      c[0] = 0b00000000;
-      c[1] = 0b00010100;
-      c[2] = 0b00001000;
-      c[3] = 0b00010100;
-      c[4] = 0b00000000;
+      c[0] = 0b00010100;
+      c[1] = 0b00001000;
+      c[2] = 0b00010100;
+      c[3] = 0b00000000;
       break;
     case '/':
       c[0] = 0b11000000;
@@ -593,18 +759,16 @@ char* getPixelsFromChar(char cIn) {
       c[4] = 0b00000000;
       break;
     case '>':
-      c[0] = 0b00000000;
-      c[1] = 0b00100010;
-      c[2] = 0b00010100;
-      c[3] = 0b00001000;
-      c[4] = 0b00000000;
+      c[0] = 0b00100010;
+      c[1] = 0b00010100;
+      c[2] = 0b00001000;
+      c[3] = 0b00000000;
       break;
     case '<':
-      c[0] = 0b00000000;
-      c[1] = 0b00001000;
-      c[2] = 0b00010100;
-      c[3] = 0b00100010;
-      c[4] = 0b00000000;
+      c[0] = 0b00001000;
+      c[1] = 0b00010100;
+      c[2] = 0b00100010;
+      c[3] = 0b00000000;
       break;
     // &&&&&&&&&&&&&&&&&&& other
     case '\\':
@@ -635,6 +799,7 @@ char* getPixelsFromChar(char cIn) {
       c[2] = 0b10000001;
       c[3] = 0b10000001;
       c[4] = 0b11111111;
+      Serial.println(cIn);
       break;
   }
   return c;

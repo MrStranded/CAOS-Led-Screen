@@ -13,13 +13,15 @@
 
 void setupSerial() {
   Serial.begin(9600);
+  delay(1);
   Serial.flush();
 }
 
 // main entry point of the code
 
 void setup() {
-  //setupSerial();
+  writeText("Droogeee!");
+  setupSerial();
   setupServer();
   initLedScreen();
 
@@ -27,7 +29,6 @@ void setup() {
 
   //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
   //readResponse(1);
-  writeText("Droogee!");
 
   //setupLEDTest();
 }
@@ -39,13 +40,13 @@ void setup() {
 int counter = 0;
 
 void loop() {
-  serverLoop();
   drawLedScreen();
-  //counter++;
-  /*if (counter >= 50) {
+  counter++;
+  if (counter >= 50) {
     shiftTextLeft();
+    serverLoop();
     counter -= 50;
-  }*/
+  }
   
 }
 
