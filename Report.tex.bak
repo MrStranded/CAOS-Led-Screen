@@ -34,11 +34,6 @@ Die Vision ist, diese LED Bank im Zimmer aufhängen oder hinstellen zu können u
 \subsubsection{Display}
 
 \begin{figure} [ht]
-\includegraphics[width=\textwidth]{front.jpg}
-\caption{Vorderseite der Platine}
-\end{figure}
-
-\begin{figure} [ht]
 \includegraphics[width=\textwidth]{Platine_hinten.jpg}
 \caption{Rückseite der Platine bei den Schieberegistern}
 \end{figure}
