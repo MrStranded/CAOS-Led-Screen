@@ -35,11 +35,7 @@ Um Texte darstellen zu können haben wir viele Bitmuster für die einzelnen Buch
 
 \subsubsection{Webseite}
 
-Die Webseite operiert auf einem Laptop via einem Python Skript. Dieses Skript ist ein einfacher Http Request Handler und dient eigentlich nur dazu, dem Arduino den Zugriff auf Dateien zu ermöglichen, in welchen Bitmuster gespeichert sind.\\
-
-\subsection{geänderte Ziele}
-
-Das Ethernet Shield für das Arduino Uno, welches wir benutzen um Daten aus dem Internet zu empfangen, kann leider nur mittels Http, nicht aber mittels Https kommunizieren. Dies hatte zur Folge, dass wir unseren Serverspace nicht nutzen konnten, do dieser auf dem Https Standard funktioniert. Die Lösung war ein privater Python Server auf einem Laptop laufen zu lassen, welches Http Requests entgegennehmen kann. Dies schränkt natürlich die Nutzung der Internetfunktion ein, da der Laptop dafür ständig angeschaltet sein muss.\\
+Auf dem Arduino läuft ein kleiner Webserver, der eine Konsole zur Verfügung stellt. Der Server schickt dem Client HTML Code, den der Browser dann in die sichtbare Website umwandelt. Über ein Eingabefeld kann Text an den Server übergeben werden, der dann auf der LED-Matrix angezeigt wird. Über Knöpfe können Requests für das Wetter und die Uhrzeit ausgeführt werden, dessen Resultat dann ebenfalls angezeigt wird.
 
 \subsection{technische Details}
 
@@ -49,22 +45,20 @@ Das Ethernet Shield für das Arduino Uno, welches wir benutzen um Daten aus dem 
 
 \subsubsection{Code}
 
-Der Code ist strukturiert in verschiedene Dateien, welche auch als Module dienen. Diese Module sind: ''main``, ''internetInterface``, ''ledInterface`` und '' ledHardwareControl``.\\
-Das ''main`` Modul macht nicht viel mehr als die anderen Module zu initialisieren und die Program Loop zu steuern.\\
-Das Modul ''internetInterface`` kümmert sich um den Aufbau einer Verbindung zur gefragten Internetseite und um die Interpretation der Antwort als Bitmuster, welches in den internen Grafikspeicher geladen wird.\\
-Das ''ledInterface`` Modul enthält den Grafikspeicher, welcher aus einem 48 Felder grossen char Array besteht, mit welchem die Lichtzustände der Pixel gespeichert werden. Ausserdem bietet es viele Komfortfunktionen für den Zugriff auf gegebenen Grafikspeicher und die Manipulation dessen.\\
-Das Modul ''ledHardwareControl`` kümmert sich um die Ansprechung der Output Pins des Arduinos. Es benutzt dazu die Daten aus dem ''ledInterface`` Modul um zu entscheiden, welche Leitungen an- und welche abgeschaltet werden sollen.\\
+Der Code ist in verschiedene Module unterteilt die zusammen die Funktionalität des Produkts gewährleisten.\\
+Das 'main' Modul initialisiert die anderen Module und hält den Mainloop in dem die Frames gezeichnet werden, die Laufschrift geshiftet wird und der Requesthandler arbeitet.\\
+Das Modul 'internetInterface' ist verantworlich für die Internetanbindung unseres Systems. Es besteht aus einem Setup-Modul, dass die physische Verbindung initialisiert und den Server startet und dem Requesthandler. Dieser sendet den Code für das Anzeigen der Webseite und bearbeitet die Eingaben über die Console um den Text zu ändern. 
+Das Modul 'ledInterface' hält den Grafikspeicher, welcher aus einem 48x8 Char-Array besteht in welchem die Lichtzustände der Pixel gespeichert werden. Es enthält ausserdem die Methoden zur Textbearbeitung. Sie ist verantwortlich für das Übersetzen von Usereingaben in die Bitmap sowie das aktualisieren der Lauftschrift. Hier werden Buchstaben in Arrays mit 8-Bit Zahlen umgewandelt.\\
+Das Modul 'chars' hält die ganzen Informationen über die darstellbaren Zeichen. Dies sind einerseits die Bitmap und andererseits die anzuzeigende Breite.\\
+Als letztes gibt es das Modul 'ledHardwareControl'. Es ist verantwortlich für die Anzeige des Grafikspeichers auf der LED-Matrix. Über die Pins des Arduinos werden Reihen und Spalten angersprochen um das gewünschte Frame anzuzeigen. Über ein Untermodul werden die Daten reihenweise in die Schieberegister geshiftet.\\
 
 \subsubsection{Webseite}
 
-Auf der Webseite liegen Dateien, welche vom Arduino ausgelesen werden können. Diese Dateien sollten im .txt Dateiformat vorliegen und mit dem UTF-8 Encoding beschrieben sein. Dabei kann das Arduino mit vier verschieden Arten der Dateiweitergabe umgehen:\\
-1) In der Datei liegt ein Text vor. Dieser wird dann auf das Display geschrieben.\\
-2) Die Characters in der Datei werden als Bytes interpretiert. Das Display füllt sich dann Spalte für Spalte mit den Bitmustern, die den jeweiligen Bits in den Bytes (Character) entsprechen.\\
-3+4) Die Datei ist gefüllt mit Zeilen aus Nullen und Einsen. Nullen entsprechen ausgeschalteten Pixeln und Einsen eingeschalteten. Diese Datei kann entweder horizontal (x=48, y=8) oder vertikal (x=8, y=48) orientiert sein. Daraus entstehen die zwei unterschiedlichen Formate.\\
+Auf dem Arduino läuft ein Webserver mit einer Internetseite. Über die IP 192.168.178.42 und Port 80 kann darauf zugegriffen werden. Die Webseite enthält ein Feld um einen neuen Text auf die Anzeige zu laden sowie Buttons um Daten wie Wetter und Uhrzeit anzuzeigen. Der Requesthandler schickt den HTML/CSS Code an den Client. Falls er vom Client einen Request bekommt wird keine Seite gesendet, stattdessen untersucht der Parser die Nachricht und aktualisiert die Anzeige. Falls es sich um das Drücken einer der Buttons handelt, holt sich der Server die Informationen per Request bei der entsprechenden Website. \\
 
 \section{Zusammenfassung}
 
-################################## TODO!!!!!\\
+!!!!!!!!!!!!!!!!!! TODO!!!!!\\
 (Wie gut läuft es schlussendlich?)\\
 
 Insgesamt war die LED Bank ein Projekt überschaubarer Komplexität. Darauf hatten wir auch abgezielt. Was schwieriger war als erwartet, war der Umgang mit den Shift Registern, welche sich Anfangs nie so verhalten haben wie wir es geplant hatten. Auch mühsamer als erwartet war die Verbindung des Arduinos mit dem Internet. Die Einschränkung auf Http macht es schwierig auf viele moderne Webseiten zuzugreifen.\\
