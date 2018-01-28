@@ -94,23 +94,36 @@ void serverLoop() {
           client.println("width: 50%;");
           client.println("margin: auto;");
           client.println("border-radius: 5px;");
-          client.println("background-color: #a2cd5a;");
+          client.println("background-color: #5381ac;");
           client.println("padding: 20px;}");
           client.println("</style>");
-          
           // end of css
+          // body
           client.println("<body>"); 
           client.println("<br/><br/><div>");
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
           // input form
           client.println("<div>");
           client.println("<form>");
-          client.println("<label for=\"led\">Enter Text</label>");
+          client.println("<h4>Enter Text</h4>");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
           client.println("<a href=\"http://192.168.178.42\"><br/>");
           client.println("<input type=\"submit\" value=\"Submit\"/>");
-          client.println("</a></form></div></div>");
+          client.println("</a></form></div>");
           // end of input form
+          /*
+          // buttons form
+          client.println("<div><form>");
+          client.println("<h4>Functions</h4>");
+          client.println("<a href=\"http://192.168.178.42/time\"><br/>");
+          client.println("<input type=\"submit\" value=\"Time\"/></a>");
+          client.println("<a href=\"http://192.168.178.42/weather\"><br/>");
+          client.println("<input type=\"submit\" value=\"Weather\"/></a>");
+          client.println("</form></div>");
+          // end of buttons form
+          */
+          client.println("</div>");
+          // end of body
           client.println("</body>"); 
           client.println("</html>"); 
           break; 
@@ -136,6 +149,27 @@ void serverLoop() {
 }
 
 void parseRequest(String *request) {
+  /*
+   * int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
+  char *message;
+  char start = request->charAt(startIndex + 1);
+  if (start == '?') {
+    startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
+    int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
+    char message[endIndex - startIndex];
+    // substring doesn't work
+    for(int i = 0; i < endIndex - startIndex; i++) {
+      message[i] = request->charAt(startIndex + i);
+    }
+    // black magic (it removes some weird characters, we don't
+    // know why either)
+    String str(message);
+  } else if (start == 't') {
+    char message = "04:20";
+  } else if (start == 'w') {
+    char message = "kalt";
+  } else return;
+   */
   int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
   if (!(request->charAt(startIndex + 1) == '?')) {
     return;
