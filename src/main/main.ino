@@ -20,10 +20,10 @@ void setupSerial() {
 // main entry point of the code
 
 void setup() {
-  //writeText("Sroogeee!");
+  writeText("Droogeee!");
   setupSerial();
   setupServer();
-  //initLedScreen();
+  initLedScreen();
 
   //setAll(1);
 
@@ -40,15 +40,13 @@ void setup() {
 int counter = 0;
 
 void loop() {
-  //drawLedScreen();
-  serverLoop();
-  /*
+  drawLedScreen();
   counter++;
   if (counter >= 50) {
     shiftTextLeft();
     serverLoop();
     counter -= 50;
-  }*/
+  }
   
 }
 

@@ -3,7 +3,7 @@
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = {192, 168, 178, 42};
-byte gateway[] = {192, 186,1,1};
+byte gateway[] = {192, 186,178,1};
 byte subnet[] = {255,255,255,0};
 
 
@@ -23,7 +23,7 @@ void setupServer() {
     // setup internet
     Serial.println("Initiaizing ethernet...");
 
-    Ethernet.begin(mac, ip);
+    Ethernet.begin(mac, ip);//, gateway, subnet);
     // give the card a second to initialize 
     delay(1000);
     
@@ -52,7 +52,7 @@ void serverLoop() {
           client.println("Content-Type: text/html"); 
           client.println("Connection: close"); 
           // the connection will be closed after completion of the response 
-          client.println("Refresh: 5"); // refresh the page automatically every 5 sec 
+          client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
           client.println(); 
           client.println("<!DOCTYPE HTML>"); 
           client.println("<html lang=\"en\">"); 
