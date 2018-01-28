@@ -70,9 +70,10 @@ void serverLoop() {
           client.println("fuck yes, im the server");
           client.print("<br/><br/>");
           //client.println("<input>Enter text here</input>");
-          client.println("<a href=\"http://192.168.178.42?penis\">");
-          client.println("<input type=\"button\" value=\"Send text\"/>");
-          client.println("</a>");
+          client.println("<form>Text:<br><input type=\"text\" name=\"text\">");
+          client.println("<a href=\"http://192.168.178.42\">");
+          client.println("<input type=\"submit\" value=\"Send text\"/>");
+          client.println("</a></form>");
           client.println("</body>"); 
           client.println("</html>"); 
           break; 
@@ -92,6 +93,17 @@ void serverLoop() {
     client.stop(); 
     Serial.println("client request:");
     Serial.println(request);
+    parseRequest(&request);
     Serial.println("client disconnected");
   }
+}
+
+void parseRequest(String *request) {
+  int startIndex = request->indexOf("=") +1; // 'GET /text='
+  int endIndex = request->indexOf("HTTP/1.1");
+  String message = request->substring(startIndex, endIndex);
+  Serial.println("------------");
+  Serial.println(message);
+  writeText(message.c_str());
+  Serial.println("------------");
 }
