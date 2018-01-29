@@ -799,7 +799,7 @@ char* getPixelsFromChar(char cIn) {
       c[2] = 0b10000001;
       c[3] = 0b10000001;
       c[4] = 0b11111111;
-      Serial.println(cIn);
+      //Serial.println(cIn);
       break;
   }
   return c;

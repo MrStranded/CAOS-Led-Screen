@@ -6,7 +6,7 @@
 
 // the maximal size for a long text
 
-#define LONGTEXTSIZE 14
+#define LONGTEXTSIZE 140
 
 // screenWidth remembers the width of the led screen
 // should normally be 48, but can differ for debbuging reasons

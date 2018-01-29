@@ -1,13 +1,12 @@
-#include <SPI.h>
+//#include <SPI.h>
 #include <Ethernet.h>
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = {192, 168, 178, 42};
-byte gateway[] = {192, 186,178,1};
-byte subnet[] = {255,255,255,0};
+//byte gateway[] = {192, 186,178,1};
+//byte subnet[] = {255,255,255,0};
 
 String request;
-
 
 EthernetServer server(80); // Web server
 
@@ -44,18 +43,19 @@ void serverLoop() {
     
     // an http request ends with a blank line 
     boolean currentLineIsBlank = true; 
+    int i = 0;
     while (client.connected()) { 
       if (client.available()) { 
         char c = client.read(); 
-        Serial.write(c); 
-        request += c;
-        
+        Serial.write(c);
+        if (i < 160) request += c;
+        i++;
         
         // if you've gotten to the end of the line (received a newline 
         // character) and the line is blank, the http request has ended, 
         // so you can send a reply 
         if (c == '\n' && currentLineIsBlank) { 
-          if (request.startsWith("GET /?text=")) break;
+          //if (request.startsWith("GET /?text=")) break;
           // send a standard http response header 
           client.println("HTTP/1.1 200 OK"); 
           client.println("Content-Type: text/html"); 
@@ -69,7 +69,7 @@ void serverLoop() {
           client.println("<meta charset=\"utf-8\">");
           client.println("</head>");
           // css
-          client.println("<style>");
+          /*client.println("<style>");
           client.println("body { background-color: #d3d3d3;}");
           client.println("input[type=text], select {");
           client.println("width: 100%;");
@@ -96,7 +96,7 @@ void serverLoop() {
           client.println("border-radius: 5px;");
           client.println("background-color: #5381ac;");
           client.println("padding: 20px;}");
-          client.println("</style>");
+          client.println("</style>");*/
           // end of css
           // body
           client.println("<body>"); 
@@ -176,16 +176,21 @@ void parseRequest(String *request) {
   }
   startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
   int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
-  char message[endIndex - startIndex];
+  char message[endIndex - startIndex + 1] = "";
   // substring doesn't work
   for(int i = 0; i < endIndex - startIndex; i++) {
     message[i] = request->charAt(startIndex + i);
   }
+  message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
   // black magic (it removes some weird characters, we don't
   // know why either)
+  Serial.println("#####");
+  Serial.println(startIndex);
+  Serial.println(endIndex);
   String str(message);
   Serial.println("------------");
   Serial.println(message);
   Serial.println("------------");
-  writeText(message,0);
+  //writeText(message,0);
+  setLongText(message);
 }
