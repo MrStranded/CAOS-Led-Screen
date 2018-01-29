@@ -88,9 +88,10 @@ void serverLoop() {
           client.println("<div><h4>Enter Text</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/></form></div>");
+          client.println("<input type=\"submit\" value=\"Submit\"/>");
+          //client.println("<h4>Functions</h4>");
           //client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
-          //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather"\"></form><div>");
+          //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
           // END OF INPUT FORM
           client.println("</div></body></html>");
           // END OF BODY
