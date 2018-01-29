@@ -36,9 +36,12 @@ void setup() {
     if (i % 50 == 0) {
       loadNextMovieFrame();
     }
+    if ((i+1) % 200 == 0) {
+      writeText("Penis");
+    }
     drawLedScreen();  
   }
-  writeText("Welcome");
+  writeText("Howdy");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
