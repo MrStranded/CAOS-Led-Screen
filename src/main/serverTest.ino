@@ -57,27 +57,21 @@ void serverLoop() {
         if (c == '\n' && currentLineIsBlank) { 
           //if (request.startsWith("GET /?text=")) break;
           // SEND HTTP RESPONSE HEADER 
-          client.println("HTTP/1.1 200 OK"); 
-          client.println("Content-Type: text/html"); 
-          client.println("Connection: close");  // the connection will be closed after completion of the response 
+          client.println("HTTP/1.1 200 OK");
+          //client.println("Connection: close");  // the connection will be closed after completion of the response 
           //client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
-          client.println(); 
-          client.println("<!DOCTYPE HTML>");
+          client.println();
           // CSS
           client.println("<style>");
           client.println("body { background-color: #d3d3d3;}");
           client.println("input[type=text], select {");
           client.println("width: 100%;");
-          client.println("padding: 12px 20px;");
-          client.println("margin: 8px 0;");
           client.println("box-sizing: border-box;");
           client.println("font-size: 150%;}");
           client.println("input[type=submit], select {");
           client.println("width: 100%;");
           client.println("background-color: #4CAF50;");
-          client.println("color: white;");
-          client.println("padding: 14px 0;");
-          client.println("margin: 8px 0;}");
+          client.println("color: white;}");
           client.println("input[type=submit]:hover {");
           client.println("background-color: #45a049;}");
           client.println("div {");
@@ -87,8 +81,6 @@ void serverLoop() {
           client.println("padding: 20px;}");
           client.println("</style>");
           // END OF CSS
-
-
           // BODY
           client.println("<body><br/><br/><div>");
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
@@ -97,20 +89,11 @@ void serverLoop() {
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
           client.println("<input type=\"submit\" value=\"Submit\"/></form></div>");
+          //client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
+          //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather"\"></form><div>");
           // END OF INPUT FORM
-          /*
-          // buttons form
-          client.println("<div>");
-          client.println("<h4>Functions</h4>");
-          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
-          
-          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
-          client.println("<input type=\"submit\" name=\"weather\"></form>");
-          client.println("</form></div>");
-          // end of buttons form
-          */
           client.println("</div></body></html>");
-          // END OF HTML
+          // END OF BODY
           break; 
         } 
         if (c == '\n') { 
