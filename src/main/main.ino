@@ -32,17 +32,19 @@ void setup() {
   //setupLEDTest();
 
   // show movie as setup
-  for (int i = 0; i < 25*50; i++) {
-    if (i % 50 == 0) {
+  int frameLength = 25;
+  int frames = 10;
+  for (int i = 0; i < frames*frameLength; i++) {
+    if (i % frameLength == 0) {
       loadNextMovieFrame();
     }
-    if ((i+1) % 200 == 0) {
+    if ((i+1) % frameLength*4 == 0) {
       writeText("Penis",0);
     }
     drawLedScreen();  
   }
   //writeText("Howdy");
-  setLongText("De Papst het z Spiez s Speck Psteck zspoht pstellt.");
+  setLongText("01234567890107012345678901070123456789010701234567890107012345678901070123456789010701234567890107012345678901070123456789010701234567890107lollollol");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

@@ -4,6 +4,10 @@
 //
 // -----------------------------------------------------------------------------
 
+// the maximal size for a long text
+
+#define LONGTEXTSIZE 14
+
 // screenWidth remembers the width of the led screen
 // should normally be 48, but can differ for debbuging reasons
 
@@ -26,17 +30,8 @@ int movieFrame = 0;
 
 // variables related to long text
 
-const int longTextSize = 140; // the maximal size for a long text
-char longText[longTextSize] = ""; // the space reserved for the long text
+char longText[LONGTEXTSIZE] = ""; // the space reserved for the long text
 int longTextPosition = 5; // the position of the long text on the screen
-
-// %%%%%%%%%%%%%%%%%%%%%
-
-// initializes the screen
-
-void initScreen() {
-  clearScreen();
-}
 
 // %%%%%%%%%%%%%%%%%%%%%
 
@@ -52,16 +47,17 @@ void loadNextMovieFrame() {
 // put a string into the long text field
 
 void setLongText(char *newText) {
-  longText[longTextSize] = "";
+  longText[LONGTEXTSIZE] = "";
   
   int i = 0;
   while (newText[i] != 0) {
     longText[i] = newText[i];
     i++;
-    if (i >= longTextSize) {
+    if (i >= LONGTEXTSIZE) {
       break;
     }
   }
+  longText[LONGTEXTSIZE-1] = 0;
   
   longTextPosition = 5;
 }
@@ -124,7 +120,7 @@ void writeChar(char c, int position) {
   int width = getCharacterWidth(c);
   
   for (int i=0; i<width; i++) {
-    if (i+position > 0) {
+    if (i+position >= 0) {
       if (i+position < screenWidth) {
        pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
       }
@@ -147,7 +143,7 @@ void writeCharIntoSlot(char c, int slot) {
 // returns the position, that the next character after the last would have
 
 int writeText(char* text, int position) {
-  clearScreen();
+  setAll(0);
   int pos = position;
   int i = 0;
   while (text[i] != 0) {
@@ -156,18 +152,6 @@ int writeText(char* text, int position) {
     i++;
   }
   return pos;
-}
-
-// %%%%%%%%%%%%%%%%%%%%%
-
-// puts the given data into the screen exactly as it is
-
-void putChars(char* data, int length) {
-  for (int i=0; i<length; i++) {
-    if (i < screenWidth) {
-      pixels[i] = data[i];
-    }
-  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -204,14 +188,6 @@ int getPixel(int x,int y) {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
-// clears all the pixels on the screen
-
-void clearScreen() {
-  setAll(0);
-}
-
-// %%%%%%%%%%%%%%%%%%%%%
-
 // sets all pixels of the screen to given power level
 // power = 1 <=> leds are on
 // power = 0 <=> leds are off
@@ -225,24 +201,6 @@ void setAll(int power) {
   
   for (int x=0; x<screenWidth; x++) {
     pixels[x] = c;
-  }
-}
-
-// %%%%%%%%%%%%%%%%%%%%%
-
-// used to debug the char array information
-
-void debugScreen() {
-  for (int y=0; y<8; y++) {
-    for (int x=0; x<screenWidth; x++) {
-      int power = getPixel(x,y);
-      if (power == 0) {
-        Serial.print(".");
-      } else {
-        Serial.print("#");
-      }
-    }
-    Serial.println("");
   }
 }
 
