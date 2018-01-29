@@ -118,49 +118,30 @@ void serverLoop() {
 }
 
 void parseRequest(String *request) {
-  /*
-   * int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
-  char *message;
-  char start = request->charAt(startIndex + 1);
-  if (start == '?') {
-    startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
-    int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
-    char message[endIndex - startIndex];
-    // substring doesn't work
-    for(int i = 0; i < endIndex - startIndex; i++) {
-      message[i] = request->charAt(startIndex + i);
-    }
-    // black magic (it removes some weird characters, we don't
-    // know why either)
-    String str(message);
-  } else if (start == 't') {
-    char message = "04:20";
-  } else if (start == 'w') {
-    char message = "kalt";
-  } else return;
-  // else if for movie (disable shifteText, reenable after movie
-   */
   int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
   if (!(request->charAt(startIndex + 1) == '?')) {
     return;
   }
-  startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
-  int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
-  char message[endIndex - startIndex + 1] = "";
-  // substring doesn't work
-  for(int i = 0; i < endIndex - startIndex; i++) {
-    message[i] = request->charAt(startIndex + i);
+  if (request->charAt(startIndex + 4) == 'x') { // /?text=
+    startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
+    int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
+    char message[endIndex - startIndex + 1] = "";
+    // substring doesn't work
+    for(int i = 0; i < endIndex - startIndex; i++) {
+      message[i] = request->charAt(startIndex + i);
+    }
+    message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
+    // black magic (it removes some weird characters, we don't know why either)
+    String str(message);
+    Serial.println("------------");
+    Serial.println(message);
+    Serial.println("------------");
+    setLongText(message);
+  } else if (request->charAt(startIndex + 4) == 'm') { // /?time=
+    setLongText("4:20");
+  } else if (request->charAt(startIndex + 4) == '?') { // /?wheater=
+    setLongText("kalt");
+  } else { 
+    setLongText("NO! bad user!\0");
   }
-  message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
-  // black magic (it removes some weird characters, we don't
-  // know why either)
-  Serial.println("#####");
-  Serial.println(startIndex);
-  Serial.println(endIndex);
-  String str(message);
-  Serial.println("------------");
-  Serial.println(message);
-  Serial.println("------------");
-  //writeText(message,0);
-  setLongText(message);
 }
