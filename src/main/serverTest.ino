@@ -56,28 +56,20 @@ void serverLoop() {
         // so you can send a reply 
         if (c == '\n' && currentLineIsBlank) { 
           //if (request.startsWith("GET /?text=")) break;
-          // send a standard http response header 
+          // SEND HTTP RESPONSE HEADER 
           client.println("HTTP/1.1 200 OK"); 
           client.println("Content-Type: text/html"); 
-          client.println("Connection: close"); 
-          // the connection will be closed after completion of the response 
+          client.println("Connection: close");  // the connection will be closed after completion of the response 
           //client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
           client.println(); 
-          client.println("<!DOCTYPE HTML>"); 
-          client.println("<html lang=\"en\">"); 
-          client.println("<head>"); 
-          client.println("<meta charset=\"utf-8\">");
-          client.println("</head>");
-          // css
-          /*client.println("<style>");
+          client.println("<!DOCTYPE HTML>");
+          // CSS
+          client.println("<style>");
           client.println("body { background-color: #d3d3d3;}");
           client.println("input[type=text], select {");
           client.println("width: 100%;");
           client.println("padding: 12px 20px;");
           client.println("margin: 8px 0;");
-          client.println("display: inline-block");
-          client.println("border: 1px solid #ccc");
-          client.println("border-radius: 4px;");
           client.println("box-sizing: border-box;");
           client.println("font-size: 150%;}");
           client.println("input[type=submit], select {");
@@ -85,46 +77,40 @@ void serverLoop() {
           client.println("background-color: #4CAF50;");
           client.println("color: white;");
           client.println("padding: 14px 0;");
-          client.println("margin: 8px 0;");
-          client.println("border: none;");
-          client.println("border-radius: 4px;}");
+          client.println("margin: 8px 0;}");
           client.println("input[type=submit]:hover {");
           client.println("background-color: #45a049;}");
           client.println("div {");
           client.println("width: 50%;");
           client.println("margin: auto;");
-          client.println("border-radius: 5px;");
           client.println("background-color: #5381ac;");
           client.println("padding: 20px;}");
-          client.println("</style>");*/
-          // end of css
-          // body
-          client.println("<body>"); 
-          client.println("<br/><br/><div>");
+          client.println("</style>");
+          // END OF CSS
+
+
+          // BODY
+          client.println("<body><br/><br/><div>");
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
-          // input form
-          client.println("<div>");
-          client.println("<h4>Enter Text</h4>");
+          // INPUT FORM
+          client.println("<div><h4>Enter Text</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/>");
-          client.println("</div>");
-          // end of input form
+          client.println("<input type=\"submit\" value=\"Submit\"/></form></div>");
+          // END OF INPUT FORM
           /*
           // buttons form
           client.println("<div>");
           client.println("<h4>Functions</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
-          client.println("<input type=\"submit\" name=\"time\">");
+          
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"submit\" name=\"weather\"></form>");
           client.println("</form></div>");
           // end of buttons form
           */
-          client.println("</div>");
-          // end of body
-          client.println("</body>"); 
-          client.println("</html>"); 
+          client.println("</div></body></html>");
+          // END OF HTML
           break; 
         } 
         if (c == '\n') { 
