@@ -37,11 +37,12 @@ void setup() {
       loadNextMovieFrame();
     }
     if ((i+1) % 200 == 0) {
-      writeText("Penis");
+      writeText("Penis",0);
     }
     drawLedScreen();  
   }
-  writeText("Howdy");
+  //writeText("Howdy");
+  setLongText("De Papst het z Spiez s Speck Psteck zspoht pstellt.");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -53,8 +54,8 @@ int counter = 0;
 void loop() {
   drawLedScreen();
   counter++;
-  if (counter % 50 == 0) {
-    shiftTextLeft();
+  if (counter % 25 == 0) {
+    shiftLongTextLeft();
   }
   if (counter % 200 == 0) {
     serverLoop();

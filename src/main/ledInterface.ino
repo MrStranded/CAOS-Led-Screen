@@ -24,6 +24,12 @@ char pixels[screenWidth] = ""; // "" initializes the array with zeros
 
 int movieFrame = 0;
 
+// variables related to long text
+
+const int longTextSize = 140; // the maximal size for a long text
+char longText[longTextSize] = ""; // the space reserved for the long text
+int longTextPosition = 5; // the position of the long text on the screen
+
 // %%%%%%%%%%%%%%%%%%%%%
 
 // initializes the screen
@@ -39,6 +45,25 @@ void initScreen() {
 void loadNextMovieFrame() {
   fillNextFrame(pixels,movieFrame);
   movieFrame++;
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
+// put a string into the long text field
+
+void setLongText(char *newText) {
+  longText[longTextSize] = "";
+  
+  int i = 0;
+  while (newText[i] != 0) {
+    longText[i] = newText[i];
+    i++;
+    if (i >= longTextSize) {
+      break;
+    }
+  }
+  
+  longTextPosition = 5;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
@@ -78,16 +103,31 @@ void shiftTextLeft() {
 
 // %%%%%%%%%%%%%%%%%%%%%
 
+// shifts the long text to the left and refreshes the pixeldata
+
+void shiftLongTextLeft() {
+  longTextPosition -= 1;
+
+  int endPosition = writeText(longText,longTextPosition);
+  if (endPosition < 0) {
+    longTextPosition = 48;
+  }
+}
+
+// %%%%%%%%%%%%%%%%%%%%%
+
 // writes given char into specified position on screen
 
 void writeChar(char c, int position) {
-  if (position < 0) { position = 0; }
+  //if (position < 0) { position = 0; }
   char* pixelData = getPixelsFromChar(c);
   int width = getCharacterWidth(c);
   
   for (int i=0; i<width; i++) {
-    if (i+position < screenWidth) {
-      pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
+    if (i+position > 0) {
+      if (i+position < screenWidth) {
+       pixels[i + position] = pixelData[i]; // the flip is because the definition in chars.ino is backwards
+      }
     }
   }
 }
@@ -103,16 +143,19 @@ void writeCharIntoSlot(char c, int slot) {
 // %%%%%%%%%%%%%%%%%%%%%
 
 // writes text into the led screen, beginning from the left
+// requires the margin of the text as a parameter
+// returns the position, that the next character after the last would have
 
-void writeText(char* text) {
+int writeText(char* text, int position) {
   clearScreen();
-  int pos = 0;
+  int pos = position;
   int i = 0;
   while (text[i] != 0) {
     writeChar(text[i],pos);
     pos += getCharacterWidth(text[i]) + 1; // + 1 is for the space between letters
     i++;
   }
+  return pos;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

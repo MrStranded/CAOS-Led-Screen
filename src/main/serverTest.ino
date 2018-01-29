@@ -187,5 +187,5 @@ void parseRequest(String *request) {
   Serial.println("------------");
   Serial.println(message);
   Serial.println("------------");
-  writeText(message);
+  writeText(message,0);
 }
