@@ -200,35 +200,64 @@ void printTime() {
 // WEATHER REQUEST
 
 void printWeather() {
-  String jsonData;
+  //String jsonData;
   if (apiClient.connect(weather,80)) {
     Serial.println("connected to weather");
     apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
     apiClient.println();
-    
+
+    int listenerSize = 6;
+    char listener[listenerSize] = ""; // listens for (temp":)
+    int listenerPos = 0;
+
+    int found = 0;
+
+    // first we want to find where the temperature lies
     while (apiClient.connected()) {
       if (apiClient.available()) {
         char c = apiClient.read();
         Serial.print(c);
-        jsonData += c;
+
+        // we fill the listener buffer
+        if (listenerPos >= listenerSize) { // buffer is full - we have to shift the data to the left
+          for (int i=0; i<listenerSize-1; i++) {
+            listener[i] = listener[i+1];
+          }
+          listener[listenerSize-1] = c;
+        } else { // buffer not yet full, we continue to fill it where we left the last time
+          listener[listenerPos] = c;
+          listenerPos++;
+        }
+
+        // here we check wheter we encountered the string we need
+        if ((listener[0] == 't') && (listener[1] == 'e') && (listener[2] == 'm') && (listener[3] == 'p') && (listener[4] == '"') && (listener[5] == ':')) {
+          found = 1;
+          break;
+        }
       }
     }
-    Serial.println();
-    apiClient.stop();
 
-    char temp[5];
+    // now that we know where the temperature is, we want to extract it until we encounter a ','
+    if (found) {
+      String temperature; // here we build the answer
+      
+      while (apiClient.connected()) {
+        if (apiClient.available()) {
+          char c = apiClient.read();
+          Serial.print(c);
+          
+          if (c != ',') { // we encounter a ',' and stop listening
+            temperature += c;
+          } else { // we fill the char into the answer
+            temperature += 0;
+            break;
+          }
+        }
+      }
 
-    // parse json
-
-    int start = jsonData.indexOf("]");
-    start += 120;
-    for (int j = 0; j < 5; j ++) {
-          temp[j] = jsonData.charAt(start+j);
+      // converting the string into a char array and printing it onto the screen
+      setLongText(temperature.c_str());
     }
-    Serial.println(temp);
-    //{"coord":{"lon":7.59,"lat":47.56},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],"base":"stations","main":{"temp":281.9,"
-    setLongText(temp);
-
     
   } else {
     Serial.println("connection to weather failed");
