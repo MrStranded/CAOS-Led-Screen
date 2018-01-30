@@ -177,6 +177,35 @@ void parseRequest(String *request) {
 
 // ---------------------
 
+// TIME REQUEST
+
+void printTime() {
+  if (apiClient.connect(weather, 80)) {
+    Serial.println("connected to time");
+    apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
+    apiClient.println();
+
+    // converting the string into a char array and printing it onto the screen
+    char *answer = searchStreamForKeyWord("dt", 2, 2, 10);
+
+    Serial.println();
+    int x = 0;
+    for ( int i = 0; i < 10; i++) {
+      Serial.print(answer[i]);
+      //x += (answer[i] - '0') * pow(10, 10 - i);
+    }
+
+    //Serial.println(x);
+
+    apiClient.stop();
+
+  } else {
+    Serial.println("connection to weather failed");
+    setLongText("Nuclear winter");
+  }
+}
+
+>>>>>>> 32edff1df676ac0351abb07d3a8fa5922bd2111b
 // WEATHER REQUEST
 
 void printWeather() {
