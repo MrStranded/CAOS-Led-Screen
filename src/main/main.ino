@@ -38,7 +38,7 @@ void setup() {
     if (i % frameLength == 0) {
       loadNextMovieFrame();
     }
-    if ((i+1) % frameLength*4 == 0) {
+    if (i == 49) {
       writeText("Penis",0);
     }
     drawLedScreen();  
