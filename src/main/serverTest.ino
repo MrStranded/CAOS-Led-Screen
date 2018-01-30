@@ -5,8 +5,6 @@
 byte mac[] = { 0x1E, 0xE7, 0xC0, 0xDE, 0xBA, 0x5E };
 byte ip[] = {192, 168, 178, 42};
 byte weather[] = {146, 185, 181, 89};
-//byte gateway[] = {192, 186,178,1};
-//byte subnet[] = {255,255,255,0};
 
 unsigned int localPort = 8888;       // local port to listen for UDP packets
 char timeServer[] = "time.nist.gov"; // time.nist.gov NTP server
@@ -35,6 +33,8 @@ void setupServer() {
   server.begin();
   Serial.println("Server set up at");
   Serial.println(Ethernet.localIP());
+
+  Udp.begin(localPort);
 }
 
 void serverLoop() {
@@ -177,35 +177,6 @@ void parseRequest(String *request) {
 
 // ---------------------
 
-// TIME REQUEST
-
-void printTime() {
-  if (apiClient.connect(weather, 80)) {
-    Serial.println("connected to time");
-    apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
-    apiClient.println();
-
-    // converting the string into a char array and printing it onto the screen
-    char *answer = searchStreamForKeyWord("dt", 2, 2, 10);
-
-    Serial.println();
-    int x = 0;
-    for ( int i = 0; i < 10; i++) {
-      Serial.print(answer[i]);
-      //x += (answer[i] - '0') * pow(10, 10 - i);
-    }
-
-    //Serial.println(x);
-
-    apiClient.stop();
-
-  } else {
-    Serial.println("connection to weather failed");
-    setLongText("Nuclear winter");
-  }
-}
-
->>>>>>> 32edff1df676ac0351abb07d3a8fa5922bd2111b
 // WEATHER REQUEST
 
 void printWeather() {
@@ -326,8 +297,11 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
 
 // Time request
 
-unsigned long getCurrentTime() {
+void getCurrentTime() {
+  Serial.println("Fuck you pre ntp");
   sendNTPpacket(timeServer); // send an NTP packet to a time server
+
+  Serial.println("fuck you post ntp");
 
   // wait to see if a reply is available
   delay(1000);
@@ -353,18 +327,18 @@ unsigned long getCurrentTime() {
     int minute = (epoch  % 3600) / 60;
     int second = epoch % 60;
 
-    char currentTime[8];
+    char currentTime[5];
     
     currentTime[0] = (char) ((((hour - (hour % 10))/10) % 10) + 48);
     currentTime[1] = (char) ((hour % 10) + 48);
     currentTime[2] = ':';
     currentTime[3] = (char) ((((minute - (minute % 10))/10) % 10) + 48);
     currentTime[4] = (char) ((minute % 10) + 48);
-    currentTime[5] = ':';
-    currentTime[6] = (char) ((((second - (second % 10))/10) % 10) + 48);
-    currentTime[7] = (char) ((second % 10) + 48);
+    //currentTime[5] = ':';
+    //currentTime[6] = (char) ((((second - (second % 10))/10) % 10) + 48);
+    //currentTime[7] = (char) ((second % 10) + 48);
     
-    
+    //Serial.println(currentTime);
     setLongText(currentTime);
   }
   Ethernet.maintain();
