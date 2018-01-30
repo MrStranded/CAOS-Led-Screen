@@ -4,12 +4,14 @@
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = {192, 168, 178, 42};
 byte google[] = {64,233,187,99};
+byte weather[] = {146,185,181,89};
 //byte gateway[] = {192, 186,178,1};
 //byte subnet[] = {255,255,255,0};
 
 String request;
 
 EthernetServer server(80); // Web server
+EthernetClient apiClient;
 
 // Http data
 String reqData; // Request from Smartphone
@@ -63,6 +65,7 @@ void serverLoop() {
           //client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
           client.println();
           // CSS
+          /*
           client.println("<style>");
           client.println("body { background-color: #d3d3d3;}");
           client.println("input[type=text], select {");
@@ -82,6 +85,7 @@ void serverLoop() {
           client.println("padding: 20px;}");
           client.println("</style>");
           // END OF CSS
+          */
           // BODY
           client.println("<body><br/><br/><div>");
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
@@ -89,10 +93,10 @@ void serverLoop() {
           client.println("<div><h4>Enter Text</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/></form></div>");
-          //client.println("<h4>Functions</h4>");
-          //client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
-          //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
+          client.println("<input type=\"submit\" value=\"Submit\"/>");
+          client.println("<h4>Functions</h4>");
+          client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
+          client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
           // END OF INPUT FORM
           client.println("</div></body></html>");
           // END OF BODY
@@ -135,14 +139,15 @@ void parseRequest(String *request) {
     // time request
     if (request->charAt(startIndex+1) == 't') {
       // CALL TIME API HERE
-      //printTime();
-      setLongText("4:20");
+      printTime();
+      //setLongText("4:20");
       return;
     }
     // weather request
     if (request->charAt(startIndex + 1) == 'w') {
       // CALL WEATHER API HERE
-      setLongText("kalt");
+      //setLongText("kalt");
+      printWeather();
       return;
     }
   }
@@ -172,22 +177,61 @@ void parseRequest(String *request) {
 // ---------------------
 
 // TIME REQUEST
-/*
+
 void printTime() {
-  EthernetClient client;
-  if (client.connect(google,80)) {
+  if (apiClient.connect(google,80)) {
     Serial.println("connected to google");
-    client.println("GET /search?q=arduino HTTP/1.0");
-    client.println();
-    while (client.connected()) {
-      if (client.available()) {
-        char c = client.read();
-        Serial.println(c);
+    apiClient.println("GET /search?q=arduino HTTP/1.0");
+    apiClient.println();
+    
+    while (apiClient.connected()) {
+      if (apiClient.available()) {
+        char c = apiClient.read();
+        Serial.print(c);
       }
     }
+    apiClient.stop();
   } else {
     Serial.println("connection to google failed");
     setLongText("4:20");
   }
-  client.stop();
-}*/
+}
+
+// WEATHER REQUEST
+
+void printWeather() {
+  String jsonData;
+  if (apiClient.connect(weather,80)) {
+    Serial.println("connected to weather");
+    apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
+    apiClient.println();
+    
+    while (apiClient.connected()) {
+      if (apiClient.available()) {
+        char c = apiClient.read();
+        Serial.print(c);
+        jsonData += c;
+      }
+    }
+    Serial.println();
+    apiClient.stop();
+
+    char temp[5];
+
+    // parse json
+
+    int start = jsonData.indexOf("]");
+    start += 120;
+    for (int j = 0; j < 5; j ++) {
+          temp[j] = jsonData->charAt(start+j);
+    }
+    Serial.println(temp);
+    //{"coord":{"lon":7.59,"lat":47.56},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],"base":"stations","main":{"temp":281.9,"
+    setLongText(temp);
+
+    
+  } else {
+    Serial.println("connection to weather failed");
+    setLongText("Nuclear winter");
+  }
+}
