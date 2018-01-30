@@ -129,6 +129,15 @@ void parseRequest(String *request) {
     // substring doesn't work
     for(int i = 0; i < endIndex - startIndex; i++) {
       message[i] = request->charAt(startIndex + i);
+      if (request->charAt(startIndex + i) == '+') message[i] = ' ';
+      if (request->charAt(startIndex + i) == '%' ||
+          request->charAt(startIndex + i + 1) == '3' ||
+          request->charAt(startIndex + i + 2) == 'F') {
+            message[i] = '?';
+            message[i+1] = 0;
+            message[i+2] = 0;
+            i += 2;
+      }
     }
     message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
     // black magic (it removes some weird characters, we don't know why either)
