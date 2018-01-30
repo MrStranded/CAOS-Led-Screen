@@ -209,7 +209,33 @@ void printWeather() {
 
     // converting the string into a char array and printing it onto the screen
     char *answer = searchStreamForKeyWord("temp",4,2,6);
-    setLongText(answer);
+    
+    // set to celsius
+    float kelvin = 0.f;
+    kelvin += (answer[0]-48) * 100;
+    kelvin += (answer[1] - 48) * 10;
+    kelvin += answer[2] -48;
+    kelvin += (answer[4] - 48) * 0.1;
+    kelvin += (answer[5] - 48) * 0.01;
+    Serial.println("kelvin");
+    Serial.println(kelvin);
+    float cel = kelvin - 273.15;
+    Serial.println("celsius");
+    Serial.println(cel);
+
+    char celsius[6];
+    dtostrf(cel, 6,2, celsius);
+    char temp[8];
+    for (int i = 0; i < 6; i++) {
+      temp[i] = celsius[i];
+    }
+    temp[6] = '@';
+    temp[7] = 'C';
+    
+    // converting the string into a char array and printing it onto the screen
+    //setLongText(temperature.c_str());
+    //setLongText(celsius.c_str());
+    setLongText(temp);
     
   } else {
     Serial.println("connection to weather failed");
