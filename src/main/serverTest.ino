@@ -88,7 +88,7 @@ void serverLoop() {
           client.println("<div><h4>Enter Text</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/>");
+          client.println("<input type=\"submit\" value=\"Submit\"/></form><div>");
           //client.println("<h4>Functions</h4>");
           //client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
           //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
@@ -120,37 +120,45 @@ void serverLoop() {
 void parseRequest(String *request) {
   int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
   if (!(request->charAt(startIndex + 1) == '?')) {
+    // no get request, nothing to parse
     return;
   }
-  if (request->charAt(startIndex + 4) == 'x') { // /?text=
-    startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
-    int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
-    char message[endIndex - startIndex + 1] = "";
-    // substring doesn't work
-    for(int i = 0; i < endIndex - startIndex; i++) {
-      message[i] = request->charAt(startIndex + i);
-      if (request->charAt(startIndex + i) == '+') message[i] = ' ';
-      if (request->charAt(startIndex + i) == '%' ||
-          request->charAt(startIndex + i + 1) == '3' ||
-          request->charAt(startIndex + i + 2) == 'F') {
-            message[i] = '?';
-            message[i+1] = 0;
-            message[i+2] = 0;
-            i += 2;
-      }
+  startIndex += 7; // 'GET /?text=jahui HTTP/1.1\n'
+  int endIndex = request->indexOf("\n") - 10; // 'GET /?text=jahui HTTP/1.1\n'
+  char message[endIndex - startIndex + 1] = "";
+  if (request->charAt(startIndex) == '&') {
+    // time request
+    if (request->charAt(startIndex+1) == 't') {
+      // CALL TIME API HERE
+      setLongText("4:20");
+      return;
     }
-    message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
-    // black magic (it removes some weird characters, we don't know why either)
-    String str(message);
-    Serial.println("------------");
-    Serial.println(message);
-    Serial.println("------------");
-    setLongText(message);
-  } else if (request->charAt(startIndex + 4) == 'm') { // /?time=
-    setLongText("4:20");
-  } else if (request->charAt(startIndex + 4) == '?') { // /?wheater=
-    setLongText("kalt");
-  } else { 
-    setLongText("NO! bad user!\0");
+    // weather request
+    if (request->charAt(startIndex + 1) == 'w') {
+      // CALL WEATHER API HERE
+      setLongText("kalt");
+      return;
+    }
   }
+  // print text
+  // substring doesn't work
+  for(int i = 0; i < endIndex - startIndex; i++) {
+    message[i] = request->charAt(startIndex + i);
+    if (request->charAt(startIndex + i) == '+') message[i] = ' ';
+    if (request->charAt(startIndex + i) == '%' ||
+        request->charAt(startIndex + i + 1) == '3' ||
+        request->charAt(startIndex + i + 2) == 'F') {
+      message[i] = '?';
+      message[i+1] = 0;
+      message[i+2] = 0;
+      i += 2;
+    }
+  }
+  message[endIndex - startIndex] = 0; // last character has to be zero, or the string won't "end" there
+  // black magic (it removes some weird characters, we don't know why either)
+  String str(message);
+  Serial.println("------------");
+  Serial.println(message);
+  Serial.println("------------");
+  setLongText(message);
 }
