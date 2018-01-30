@@ -159,17 +159,19 @@ int writeText(char* text, int position) {
 // power = 0 <=> led is off
 
 void setPixel(int x,int y,int power) {
-  // pixelMask is 0 everywhere, except in position y
-  char pixelMask = 1 << (y);
+  if ((x>=0) && (x<screenWidth) && (y>=0) && (y<8)) { // check that the pixel is in bounds
+    // pixelMask is 0 everywhere, except in position y
+    char pixelMask = 1 << (y);
+    
+    // columnMask is 1 everywhere, except in position y
+    char columnMask = 255 - pixelMask;
+    
+    // pixelMask has to be multiplied with power, so it contains new value of pixel
+    pixelMask = pixelMask * power;
   
-  // columnMask is 1 everywhere, except in position y
-  char columnMask = 255 - pixelMask;
-  
-  // pixelMask has to be multiplied with power, so it contains new value of pixel
-  pixelMask = pixelMask * power;
-
-  // the pixelvalue copied at every bit where pixelMask is 1 and reset at the position where pixelMask is 0 by columnMask
-  pixels[x] = pixelMask | (pixels[x] & columnMask);
+    // the pixelvalue copied at every bit where pixelMask is 1 and reset at the position where pixelMask is 0 by columnMask
+    pixels[x] = pixelMask | (pixels[x] & columnMask);
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
