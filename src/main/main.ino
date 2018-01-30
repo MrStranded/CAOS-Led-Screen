@@ -1,12 +1,3 @@
-// states for the state machine (if needed)
-
-#define CONNECTIONSTATE 0
-#define WAITINGSTATE 1
-
-// delay between frames in miliseconds
-
-#define LEDFRAMEDELAY 10
-
 // %%%%%%%%%%%%%%%%%%%%%
 
 // setup of the Serial port used for debugging
@@ -34,7 +25,7 @@ void setup() {
     drawLedScreen();  
   }
   //writeText("Howdy");
-  setLongText("hi");
+  setLongText("howdy");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

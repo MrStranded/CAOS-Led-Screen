@@ -203,4 +203,3 @@ void setAll(int power) {
     pixels[x] = c;
   }
 }
-

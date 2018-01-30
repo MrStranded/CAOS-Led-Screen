@@ -1,6 +1,5 @@
 //#include <SPI.h>
 #include <Ethernet.h>
-#include <time.h>
 
 byte mac[] = { 0x1E, 0xE7, 0xC0, 0xDE, 0xBA, 0x5E };
 byte ip[] = {192, 168, 178, 42};
@@ -24,8 +23,6 @@ void setupServer() {
   digitalWrite(4, HIGH);
 
   // setup internet
-  Serial.println("Initiaizing ethernet...");
-
   Ethernet.begin(mac, ip);//, gateway, subnet);
   // give the card a second to initialize
   delay(1000);
@@ -41,7 +38,6 @@ void serverLoop() {
   // listen for incoming clients
   EthernetClient client = server.available();
   if (client) {
-    Serial.println("new client");
 
     request = "";
 
@@ -61,43 +57,35 @@ void serverLoop() {
         if (c == '\n' && currentLineIsBlank) {
           //if (request.startsWith("GET /?text=")) break;
           // SEND HTTP RESPONSE HEADER
-          client.println("HTTP/1.1 200 OK");
+          //client.println("HTTP/1.1 200 OK");
           //client.println("Connection: close");  // the connection will be closed after completion of the response
           //client.println("Refresh: 10"); // refresh the page automatically every 5 sec
-          client.println();
+          //client.println();
           // CSS
-          /*
-            client.println("<style>");
-            client.println("body { background-color: #d3d3d3;}");
-            client.println("input[type=text], select {");
-            client.println("width: 100%;");
-            client.println("box-sizing: border-box;");
-            client.println("font-size: 150%;}");
-            client.println("input[type=submit], select {");
-            client.println("width: 100%;");
-            client.println("background-color: #4CAF50;");
-            client.println("color: white;}");
-            client.println("input[type=submit]:hover {");
-            client.println("background-color: #45a049;}");
-            client.println("div {");
-            client.println("width: 50%;");
-            client.println("margin: auto;");
-            client.println("background-color: #5381ac;");
-            client.println("padding: 20px;}");
-            client.println("</style>");
-            // END OF CSS
-          */
+          client.println("<style>");
+          client.println("body { background-color: #a6a6a6;}");
+          client.println("input[type=text], select {");
+          client.println("box-sizing: border-box;");
+          client.println("width: 100%;");
+          client.println("font-size: 150%;}");
+          client.println("input[type=submit], select {");
+          client.println("width: 100%;");
+          client.println("background-color: #5381ac;");
+          client.println("color: white;}");
+          client.println("div {");
+          client.println("width: 50%;");
+          client.println("padding: 20px;}");
+          client.println("</style>");
+          // END OF CSS
           // BODY
-          client.println("<body><br/><br/><div>");
+          client.println("<body><div>");
           client.println("<h1>Welcome to the LED-Matrix webserver</h1>");
           // INPUT FORM
-          client.println("<div><h4>Enter Text</h4>");
-          client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
+          client.println("<div><form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/>");
-          client.println("<h4>Functions</h4>");
+          client.println("<input type=\"submit\" value=\"Submit\"/><hr/>");
           client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
-          client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
+          client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form></div>");
           // END OF INPUT FORM
           client.println("</div></body></html>");
           // END OF BODY
@@ -116,10 +104,7 @@ void serverLoop() {
     delay(1);
     // close the connection:
     client.stop();
-    Serial.println("client request:");
-    Serial.println(request);
     parseRequest(&request);
-    Serial.println("client disconnected");
   }
 }
 
@@ -183,7 +168,6 @@ void printWeather() {
   //String searchTags[2] = {"temp:\"","description:\""};
 
   if (apiClient.connect(weather, 80)) {
-    Serial.println("connected to weather");
     apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
     apiClient.println();
 
@@ -197,11 +181,7 @@ void printWeather() {
     kelvin += answer[2] - 48;
     kelvin += (answer[4] - 48) * 0.1;
     kelvin += (answer[5] - 48) * 0.01;
-    Serial.println("kelvin");
-    Serial.println(kelvin);
     float cel = kelvin - 273.15;
-    Serial.println("celsius");
-    Serial.println(cel);
 
     char celsius[6];
     dtostrf(cel, 6, 2, celsius);
@@ -219,7 +199,6 @@ void printWeather() {
     apiClient.stop();
 
   } else {
-    Serial.println("connection to weather failed");
     setLongText("Nuclear winter");
   }
 }
@@ -231,8 +210,6 @@ void printWeather() {
 char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int searchLength) {
   char listener[listenerSize] = ""; // listens for search
   int listenerPos = 0;
-
-  Serial.println(search);
 
   int found = 0;
 
@@ -283,7 +260,6 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
         i++;
         if (i >= searchLength) {
           answer[searchLength] = 0;
-          Serial.println();
           return answer;
         }
       }
@@ -298,10 +274,7 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
 // Time request
 
 void getCurrentTime() {
-  Serial.println("Fuck you pre ntp");
   sendNTPpacket(timeServer); // send an NTP packet to a time server
-
-  Serial.println("fuck you post ntp");
 
   // wait to see if a reply is available
   delay(1000);
@@ -369,5 +342,4 @@ void sendNTPpacket(char* address) {
   Udp.write(packetBuffer, NTP_PACKET_SIZE);
   Udp.endPacket();
 }
-
 
