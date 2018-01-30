@@ -24,15 +24,8 @@ void setup() {
   setupServer();
   initLedScreen();
 
-  //setAll(1);
-
-  //connectToServer("192.168.1.2", 8000, "GET website/pixelinfo_horizontal.txt");
-  //readResponse(1);
-
-  //setupLEDTest();
-
   // show movie as setup
-  int frameLength = 10;
+  int frameLength = 5;
   int frames = 20+20+48;
   for (int i = 0; i < frames*frameLength; i++) {
     if (i % frameLength == 0) {
@@ -59,7 +52,7 @@ void loop() {
   if (counter % 200 == 0) {
     serverLoop();
   }
-  if (counter % 25 == 0) {
+  if (counter % 15 == 0) {
     shiftLongTextLeft();
   }
 }
