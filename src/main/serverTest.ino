@@ -223,7 +223,7 @@ void printWeather() {
     int start = jsonData.indexOf("]");
     start += 120;
     for (int j = 0; j < 5; j ++) {
-          temp[j] = jsonData->charAt(start+j);
+          temp[j] = jsonData.charAt(start+j);
     }
     Serial.println(temp);
     //{"coord":{"lon":7.59,"lat":47.56},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],"base":"stations","main":{"temp":281.9,"
