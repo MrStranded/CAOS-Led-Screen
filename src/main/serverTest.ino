@@ -327,7 +327,7 @@ void getCurrentTime() {
     int minute = (epoch  % 3600) / 60;
     int second = epoch % 60;
 
-    char currentTime[5];
+    char currentTime[6];
     
     currentTime[0] = (char) ((((hour - (hour % 10))/10) % 10) + 48);
     currentTime[1] = (char) ((hour % 10) + 48);
@@ -337,6 +337,7 @@ void getCurrentTime() {
     //currentTime[5] = ':';
     //currentTime[6] = (char) ((((second - (second % 10))/10) % 10) + 48);
     //currentTime[7] = (char) ((second % 10) + 48);
+    currentTime[5] = '\0';
     
     //Serial.println(currentTime);
     setLongText(currentTime);
