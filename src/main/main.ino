@@ -44,7 +44,7 @@ void setup() {
     drawLedScreen();  
   }
   //writeText("Howdy");
-  setLongText("kei ahnig :)");
+  setLongText("hi");
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

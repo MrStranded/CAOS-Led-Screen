@@ -3,6 +3,7 @@
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = {192, 168, 178, 42};
+byte google[] = {64,233,187,99};
 //byte gateway[] = {192, 186,178,1};
 //byte subnet[] = {255,255,255,0};
 
@@ -88,7 +89,7 @@ void serverLoop() {
           client.println("<div><h4>Enter Text</h4>");
           client.println("<form action=\"http://192.168.178.42\" method=\"GET\">");
           client.println("<input type=\"text\" id=\"led\" name=\"text\">");
-          client.println("<input type=\"submit\" value=\"Submit\"/></form><div>");
+          client.println("<input type=\"submit\" value=\"Submit\"/></form></div>");
           //client.println("<h4>Functions</h4>");
           //client.println("<input type=\"submit\" name=\"time\" value=\"Time\">");
           //client.println("<input type=\"submit\" name=\"weather\" value=\"Weather\"></form><div>");
@@ -117,6 +118,10 @@ void serverLoop() {
   }
 }
 
+// --------------------------
+
+// PARSER
+
 void parseRequest(String *request) {
   int startIndex = request->indexOf("/"); // 'GET /?text=jahui HTTP/1.1\n'
   if (!(request->charAt(startIndex + 1) == '?')) {
@@ -130,6 +135,7 @@ void parseRequest(String *request) {
     // time request
     if (request->charAt(startIndex+1) == 't') {
       // CALL TIME API HERE
+      //printTime();
       setLongText("4:20");
       return;
     }
@@ -162,3 +168,26 @@ void parseRequest(String *request) {
   Serial.println("------------");
   setLongText(message);
 }
+
+// ---------------------
+
+// TIME REQUEST
+/*
+void printTime() {
+  EthernetClient client;
+  if (client.connect(google,80)) {
+    Serial.println("connected to google");
+    client.println("GET /search?q=arduino HTTP/1.0");
+    client.println();
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        Serial.println(c);
+      }
+    }
+  } else {
+    Serial.println("connection to google failed");
+    setLongText("4:20");
+  }
+  client.stop();
+}*/
