@@ -25,7 +25,7 @@ void setup() {
   initLedScreen();
 
   // show movie as setup
-  int frameLength = 5;
+  int frameLength = 3;
   int frames = 20+8+48;
   for (int i = 0; i < frames*frameLength; i++) {
     if (i % frameLength == 0) {

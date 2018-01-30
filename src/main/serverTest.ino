@@ -207,68 +207,82 @@ void printWeather() {
     apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
     apiClient.println();
 
-    char search[6] = {'t','e','m','p','"',':'};
-    int listenerSize = sizeof(search)/sizeof(search[0]);
-    char listener[listenerSize] = ""; // listens for (temp":)
-    int listenerPos = 0;
-
-    int found = 0;
-
-    // first we want to find where the temperature lies
-    while (apiClient.connected()) {
-      if (apiClient.available()) {
-        char c = apiClient.read();
-        Serial.print(c);
-
-        // we fill the listener buffer
-        if (listenerPos >= listenerSize) { // buffer is full - we have to shift the data to the left
-          for (int i=0; i<listenerSize-1; i++) {
-            listener[i] = listener[i+1];
-          }
-          listener[listenerSize-1] = c;
-        } else { // buffer not yet full, we continue to fill it where we left the last time
-          listener[listenerPos] = c;
-          listenerPos++;
-        }
-
-        // here we check wheter we encountered the string we need
-        found = 1;
-        for (int i=0; i< listenerSize; i++) {
-          if (listener[i] != search[i]) { // not all characters match the search mask -> found = 0
-            found = 0;
-            break;
-          }
-        }
-        if (found == 1) { // all characters match -> leave loop
-          break;
-        }
-      }
-    }
-
-    // now that we know where the temperature is, we want to extract it until we encounter a ','
-    if (found) {
-      String temperature; // here we build the answer
-      int i = 0;
-      
-      while (apiClient.connected()) {
-        if (apiClient.available()) {
-          char c = apiClient.read();
-          Serial.print(c);
-
-          temperature += c;
-          i++;
-          if (i>=6) {
-            break;
-          }
-        }
-      }
-
-      // converting the string into a char array and printing it onto the screen
-      setLongText(temperature.c_str());
-    }
+    // converting the string into a char array and printing it onto the screen
+    char *answer = searchStreamForKeyWord("temp",4,2,6);
+    setLongText(answer);
     
   } else {
     Serial.println("connection to weather failed");
     setLongText("Nuclear winter");
   }
 }
+
+// *******************
+
+// returns a char array which immediatly trails the keyword of length
+
+char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int searchLength) {
+  char listener[listenerSize] = ""; // listens for search
+  int listenerPos = 0;
+
+  Serial.println(search);
+
+  int found = 0;
+
+  // first we want to find where the temperature lies
+  while (apiClient.connected()) {
+    if (apiClient.available()) {
+      char c = apiClient.read();
+      Serial.print(c);
+
+      // we fill the listener buffer
+      if (listenerPos >= listenerSize) { // buffer is full - we have to shift the data to the left
+        for (int i=0; i<listenerSize-1; i++) {
+          listener[i] = listener[i+1];
+        }
+        listener[listenerSize-1] = c;
+      } else { // buffer not yet full, we continue to fill it where we left the last time
+        listener[listenerPos] = c;
+        listenerPos++;
+      }
+
+      // here we check wheter we encountered the string we need
+      found = 1;
+      for (int i=0; i< listenerSize; i++) {
+        if (listener[i] != search[i]) { // not all characters match the search mask -> found = 0
+          found = 0;
+          //break;
+        }
+      }
+      if (found == 1) { // all characters match -> leave loop
+        break;
+      }
+    }
+  }
+
+  // now that we know where the temperature is, we want to extract it
+  if (found == 1) {
+    char answer[searchLength+1] = ""; // here we build the answer
+    int i = -gapLength;
+    
+    while (apiClient.connected()) {
+      if (apiClient.available()) {
+        char c = apiClient.read();
+        Serial.print(c);
+
+        if (i>=0) {
+          answer[i] = c;
+        }
+        i++;
+        if (i>=searchLength) {
+          answer[searchLength] = 0;
+          Serial.println();
+          return answer;
+        }
+      }
+    }
+  } else {
+    return "-";
+  }
+}
+
