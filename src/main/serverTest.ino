@@ -214,12 +214,21 @@ Serial.println("jojo");
 // WEATHER REQUEST
 
 void printWeather() {
-  String jsonData;
-  if (apiClient.connect(weather, 80)) {
+  //String searchTags[2] = {"temp:\"","description:\""};
+
+  if (apiClient.connect(weather,80)) {
     Serial.println("connected to weather");
     apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
     apiClient.println();
 
+    char search[6] = {'t','e','m','p','"',':'};
+    int listenerSize = sizeof(search)/sizeof(search[0]);
+    char listener[listenerSize] = ""; // listens for (temp":)
+    int listenerPos = 0;
+
+    int found = 0;
+
+    // first we want to find where the temperature lies
     while (apiClient.connected()) {
       if (apiClient.available()) {
         char c = apiClient.read();
@@ -237,8 +246,14 @@ void printWeather() {
         }
 
         // here we check wheter we encountered the string we need
-        if ((listener[0] == 't') && (listener[1] == 'e') && (listener[2] == 'm') && (listener[3] == 'p') && (listener[4] == '"') && (listener[5] == ':')) {
-          found = 1;
+        found = 1;
+        for (int i=0; i< listenerSize; i++) {
+          if (listener[i] != search[i]) { // not all characters match the search mask -> found = 0
+            found = 0;
+            break;
+          }
+        }
+        if (found == 1) { // all characters match -> leave loop
           break;
         }
       }
@@ -247,15 +262,16 @@ void printWeather() {
     // now that we know where the temperature is, we want to extract it until we encounter a ','
     if (found) {
       String temperature; // here we build the answer
+      int i = 0;
       
       while (apiClient.connected()) {
         if (apiClient.available()) {
           char c = apiClient.read();
           Serial.print(c);
-          
-          if (c != ',') { // we encounter a ',' and stop listening
-            temperature += c;
-          } else { // we fill the char into the answer
+
+          temperature += c;
+          i++;
+          if (i>=6) {
             temperature += 0;
             break;
           }

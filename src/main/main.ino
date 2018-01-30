@@ -26,7 +26,7 @@ void setup() {
 
   // show movie as setup
   int frameLength = 5;
-  int frames = 20+20+48;
+  int frames = 20+8+48;
   for (int i = 0; i < frames*frameLength; i++) {
     if (i % frameLength == 0) {
       loadNextMovieFrame();
