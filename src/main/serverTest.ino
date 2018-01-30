@@ -236,6 +236,7 @@ void printWeather() {
     //setLongText(temperature.c_str());
     //setLongText(celsius.c_str());
     setLongText(temp);
+    apiClient.stop();
     
   } else {
     Serial.println("connection to weather failed");
