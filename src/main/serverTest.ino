@@ -1,12 +1,19 @@
 //#include <SPI.h>
 #include <Ethernet.h>
 
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte mac[] = { 0x1E, 0xE7, 0xC0, 0xDE, 0xBA, 0x5E };
 byte ip[] = {192, 168, 178, 42};
 byte google[] = {64,233,187,99};
 byte weather[] = {146,185,181,89};
 //byte gateway[] = {192, 186,178,1};
 //byte subnet[] = {255,255,255,0};
+
+unsigned int localPort = 8888;       // local port to listen for UDP packets
+char timeServer[] = "time.nist.gov"; // time.nist.gov NTP server
+const int NTP_PACKET_SIZE = 48; // NTP time stamp is in the first 48 bytes of the message
+byte packetBuffer[ NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets
+// A UDP instance to let us send and receive packets over UDP
+EthernetUDP Udp;
 
 String request;
 
@@ -34,6 +41,8 @@ void setupServer() {
     server.begin();
     Serial.println("Server set up at");
     Serial.println(Ethernet.localIP());
+
+    Udp.begin(localPort);
 }
 
 void serverLoop() {
@@ -139,8 +148,12 @@ void parseRequest(String *request) {
     // time request
     if (request->charAt(startIndex+1) == 't') {
       // CALL TIME API HERE
-      printTime();
-      //setLongText("4:20");
+      //printTime();
+      unsigned long curTime = getCurrentTime();
+
+      
+      
+      setLongText("4:20");
       return;
     }
     // weather request
@@ -175,28 +188,6 @@ void parseRequest(String *request) {
 }
 
 // ---------------------
-
-// TIME REQUEST
-
-void printTime() {
-  if (apiClient.connect(google,80)) {
-    Serial.println("connected to google");
-    apiClient.println("GET /search?q=arduino HTTP/1.0");
-    apiClient.println();
-    
-    while (apiClient.connected()) {
-      if (apiClient.available()) {
-        char c = apiClient.read();
-        Serial.print(c);
-      }
-    }
-    apiClient.stop();
-  } else {
-    Serial.println("connection to google failed");
-    setLongText("4:20");
-  }
-}
-
 // WEATHER REQUEST
 
 void printWeather() {
@@ -312,4 +303,87 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
     return "-";
   }
 }
+
+// ------------
+
+// Time request
+
+unsigned long getCurrentTime() {
+  sendNTPpacket(timeServer); // send an NTP packet to a time server
+
+  // wait to see if a reply is available
+  delay(1000);
+  if (Udp.parsePacket()) {
+    // We've received a packet, read the data from it
+    Udp.read(packetBuffer, NTP_PACKET_SIZE); // read the packet into the buffer
+
+    // the timestamp starts at byte 40 of the received packet and is four bytes,
+    // or two words, long. First, extract the two words:
+
+    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
+    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
+    // combine the four bytes (two words) into a long integer
+    // this is NTP time (seconds since Jan 1 1900):
+    unsigned long secsSince1900 = highWord << 16 | lowWord;
+
+    // now convert NTP time into everyday time:
+    Serial.print("Unix time = ");
+    // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
+    const unsigned long seventyYears = 2208988800UL;
+    // subtract seventy years:
+    unsigned long epoch = secsSince1900 - seventyYears;
+    epoch += 3600; // UTC + 1 University of Basel, Switzerland
+    return epoch;
+    // print Unix time:
+    Serial.println(epoch);
+
+    /*
+    // print the hour, minute and second:
+    Serial.print("The UTC time is ");       // UTC is the time at Greenwich Meridian (GMT)
+    Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
+    Serial.print(':');
+    if (((epoch % 3600) / 60) < 10) {
+      // In the first 10 minutes of each hour, we'll want a leading '0'
+      Serial.print('0');
+    }
+    Serial.print((epoch  % 3600) / 60); // print the minute (3600 equals secs per minute)
+    Serial.print(':');
+    if ((epoch % 60) < 10) {
+      // In the first 10 seconds of each minute, we'll want a leading '0'
+      Serial.print('0');
+    }
+    Serial.println(epoch % 60); // print the second
+    */
+    
+  }
+  // wait ten seconds before asking for the time again
+  //delay(10000);
+  Ethernet.maintain();
+}
+
+// UDP STUFF
+
+// send an NTP request to the time server at the given address
+void sendNTPpacket(char* address) {
+  // set all bytes in the buffer to 0
+  memset(packetBuffer, 0, NTP_PACKET_SIZE);
+  // Initialize values needed to form NTP request
+  // (see URL above for details on the packets)
+  packetBuffer[0] = 0b11100011;   // LI, Version, Mode
+  packetBuffer[1] = 0;     // Stratum, or type of clock
+  packetBuffer[2] = 6;     // Polling Interval
+  packetBuffer[3] = 0xEC;  // Peer Clock Precision
+  // 8 bytes of zero for Root Delay & Root Dispersion
+  packetBuffer[12]  = 49;
+  packetBuffer[13]  = 0x4E;
+  packetBuffer[14]  = 49;
+  packetBuffer[15]  = 52;
+
+  // all NTP fields have been given values, now
+  // you can send a packet requesting a timestamp:
+  Udp.beginPacket(address, 123); //NTP requests are to port 123
+  Udp.write(packetBuffer, NTP_PACKET_SIZE);
+  Udp.endPacket();
+}
+
 
