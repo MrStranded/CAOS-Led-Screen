@@ -1,10 +1,10 @@
 //#include <SPI.h>
 #include <Ethernet.h>
+#include <time.h>
 
 byte mac[] = { 0x1E, 0xE7, 0xC0, 0xDE, 0xBA, 0x5E };
 byte ip[] = {192, 168, 178, 42};
-byte google[] = {64,233,187,99};
-byte weather[] = {146,185,181,89};
+byte weather[] = {146, 185, 181, 89};
 //byte gateway[] = {192, 186,178,1};
 //byte subnet[] = {255,255,255,0};
 
@@ -20,80 +20,72 @@ String request;
 EthernetServer server(80); // Web server
 EthernetClient apiClient;
 
-// Http data
-String reqData; // Request from Smartphone
-String header;
-int contentSize = -1;
-String CONTENT_LENGTH_TXT = "Content-Length: ";
-
 void setupServer() {
-    // disable the SD card by switching pin 4 high 
-    pinMode(4, OUTPUT); 
-    digitalWrite(4, HIGH); 
+  // disable the SD card by switching pin 4 high
+  pinMode(4, OUTPUT);
+  digitalWrite(4, HIGH);
 
-    // setup internet
-    Serial.println("Initiaizing ethernet...");
+  // setup internet
+  Serial.println("Initiaizing ethernet...");
 
-    Ethernet.begin(mac, ip);//, gateway, subnet);
-    // give the card a second to initialize 
-    delay(1000);
-    
-    server.begin();
-    Serial.println("Server set up at");
-    Serial.println(Ethernet.localIP());
+  Ethernet.begin(mac, ip);//, gateway, subnet);
+  // give the card a second to initialize
+  delay(1000);
 
-    Udp.begin(localPort);
+  server.begin();
+  Serial.println("Server set up at");
+  Serial.println(Ethernet.localIP());
 }
 
 void serverLoop() {
-  // listen for incoming clients 
-  EthernetClient client = server.available(); 
-  if (client) { 
-    Serial.println("new client"); 
+  // listen for incoming clients
+  EthernetClient client = server.available();
+  if (client) {
+    Serial.println("new client");
 
     request = "";
-    
-    // an http request ends with a blank line 
-    boolean currentLineIsBlank = true; 
+
+    // an http request ends with a blank line
+    boolean currentLineIsBlank = true;
     int i = 0;
-    while (client.connected()) { 
-      if (client.available()) { 
-        char c = client.read(); 
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
         Serial.write(c);
         if (i < 160) request += c;
         i++;
-        
-        // if you've gotten to the end of the line (received a newline 
-        // character) and the line is blank, the http request has ended, 
-        // so you can send a reply 
-        if (c == '\n' && currentLineIsBlank) { 
+
+        // if you've gotten to the end of the line (received a newline
+        // character) and the line is blank, the http request has ended,
+        // so you can send a reply
+        if (c == '\n' && currentLineIsBlank) {
           //if (request.startsWith("GET /?text=")) break;
-          // SEND HTTP RESPONSE HEADER 
+          // SEND HTTP RESPONSE HEADER
           client.println("HTTP/1.1 200 OK");
-          //client.println("Connection: close");  // the connection will be closed after completion of the response 
-          //client.println("Refresh: 10"); // refresh the page automatically every 5 sec 
+          //client.println("Connection: close");  // the connection will be closed after completion of the response
+          //client.println("Refresh: 10"); // refresh the page automatically every 5 sec
           client.println();
           // CSS
           /*
-          client.println("<style>");
-          client.println("body { background-color: #d3d3d3;}");
-          client.println("input[type=text], select {");
-          client.println("width: 100%;");
-          client.println("box-sizing: border-box;");
-          client.println("font-size: 150%;}");
-          client.println("input[type=submit], select {");
-          client.println("width: 100%;");
-          client.println("background-color: #4CAF50;");
-          client.println("color: white;}");
-          client.println("input[type=submit]:hover {");
-          client.println("background-color: #45a049;}");
-          client.println("div {");
-          client.println("width: 50%;");
-          client.println("margin: auto;");
-          client.println("background-color: #5381ac;");
-          client.println("padding: 20px;}");
-          client.println("</style>");
-          // END OF CSS
+            client.println("<style>");
+            client.println("body { background-color: #d3d3d3;}");
+            client.println("input[type=text], select {");
+            client.println("width: 100%;");
+            client.println("box-sizing: border-box;");
+            client.println("font-size: 150%;}");
+            client.println("input[type=submit], select {");
+            client.println("width: 100%;");
+            client.println("background-color: #4CAF50;");
+            client.println("color: white;}");
+            client.println("input[type=submit]:hover {");
+            client.println("background-color: #45a049;}");
+            client.println("div {");
+            client.println("width: 50%;");
+            client.println("margin: auto;");
+            client.println("background-color: #5381ac;");
+            client.println("padding: 20px;}");
+            client.println("</style>");
+            // END OF CSS
           */
           // BODY
           client.println("<body><br/><br/><div>");
@@ -109,21 +101,21 @@ void serverLoop() {
           // END OF INPUT FORM
           client.println("</div></body></html>");
           // END OF BODY
-          break; 
-        } 
-        if (c == '\n') { 
-          // you're starting a new line 
-          currentLineIsBlank = true; 
-        } else if (c != '\r') { 
-          // you've gotten a character on the current line 
-          currentLineIsBlank = false; 
-        } 
-      } 
-    } 
-    // give the web browser time to receive the data 
-    delay(1); 
-    // close the connection: 
-    client.stop(); 
+          break;
+        }
+        if (c == '\n') {
+          // you're starting a new line
+          currentLineIsBlank = true;
+        } else if (c != '\r') {
+          // you've gotten a character on the current line
+          currentLineIsBlank = false;
+        }
+      }
+    }
+    // give the web browser time to receive the data
+    delay(1);
+    // close the connection:
+    client.stop();
     Serial.println("client request:");
     Serial.println(request);
     parseRequest(&request);
@@ -146,14 +138,10 @@ void parseRequest(String *request) {
   char message[endIndex - startIndex + 1] = "";
   if (request->charAt(startIndex) == '&') {
     // time request
-    if (request->charAt(startIndex+1) == 't') {
+    if (request->charAt(startIndex + 1) == 't') {
       // CALL TIME API HERE
       //printTime();
-      unsigned long curTime = getCurrentTime();
-
-      
-      
-      setLongText("4:20");
+      getCurrentTime();
       return;
     }
     // weather request
@@ -166,15 +154,15 @@ void parseRequest(String *request) {
   }
   // print text
   // substring doesn't work
-  for(int i = 0; i < endIndex - startIndex; i++) {
+  for (int i = 0; i < endIndex - startIndex; i++) {
     message[i] = request->charAt(startIndex + i);
     if (request->charAt(startIndex + i) == '+') message[i] = ' ';
     if (request->charAt(startIndex + i) == '%' ||
         request->charAt(startIndex + i + 1) == '3' ||
         request->charAt(startIndex + i + 2) == 'F') {
       message[i] = '?';
-      message[i+1] = 0;
-      message[i+2] = 0;
+      message[i + 1] = 0;
+      message[i + 2] = 0;
       i += 2;
     }
   }
@@ -188,24 +176,25 @@ void parseRequest(String *request) {
 }
 
 // ---------------------
+
 // WEATHER REQUEST
 
 void printWeather() {
   //String searchTags[2] = {"temp:\"","description:\""};
 
-  if (apiClient.connect(weather,80)) {
+  if (apiClient.connect(weather, 80)) {
     Serial.println("connected to weather");
     apiClient.println("GET /data/2.5/weather?q=Basel&APPID=3410a8375afbfb13baeeff03f2472b6b");
     apiClient.println();
 
     // converting the string into a char array and printing it onto the screen
-    char *answer = searchStreamForKeyWord("temp",4,2,6);
-    
+    char *answer = searchStreamForKeyWord("temp", 4, 2, 6);
+
     // set to celsius
     float kelvin = 0.f;
-    kelvin += (answer[0]-48) * 100;
+    kelvin += (answer[0] - 48) * 100;
     kelvin += (answer[1] - 48) * 10;
-    kelvin += answer[2] -48;
+    kelvin += answer[2] - 48;
     kelvin += (answer[4] - 48) * 0.1;
     kelvin += (answer[5] - 48) * 0.01;
     Serial.println("kelvin");
@@ -215,20 +204,20 @@ void printWeather() {
     Serial.println(cel);
 
     char celsius[6];
-    dtostrf(cel, 6,2, celsius);
+    dtostrf(cel, 6, 2, celsius);
     char temp[8];
     for (int i = 0; i < 6; i++) {
       temp[i] = celsius[i];
     }
     temp[6] = '@';
     temp[7] = 'C';
-    
+
     // converting the string into a char array and printing it onto the screen
     //setLongText(temperature.c_str());
     //setLongText(celsius.c_str());
     setLongText(temp);
     apiClient.stop();
-    
+
   } else {
     Serial.println("connection to weather failed");
     setLongText("Nuclear winter");
@@ -255,10 +244,10 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
 
       // we fill the listener buffer
       if (listenerPos >= listenerSize) { // buffer is full - we have to shift the data to the left
-        for (int i=0; i<listenerSize-1; i++) {
-          listener[i] = listener[i+1];
+        for (int i = 0; i < listenerSize - 1; i++) {
+          listener[i] = listener[i + 1];
         }
-        listener[listenerSize-1] = c;
+        listener[listenerSize - 1] = c;
       } else { // buffer not yet full, we continue to fill it where we left the last time
         listener[listenerPos] = c;
         listenerPos++;
@@ -266,7 +255,7 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
 
       // here we check wheter we encountered the string we need
       found = 1;
-      for (int i=0; i< listenerSize; i++) {
+      for (int i = 0; i < listenerSize; i++) {
         if (listener[i] != search[i]) { // not all characters match the search mask -> found = 0
           found = 0;
           //break;
@@ -280,19 +269,19 @@ char *searchStreamForKeyWord(char *search, int listenerSize, int gapLength, int 
 
   // now that we know where the temperature is, we want to extract it
   if (found == 1) {
-    char answer[searchLength+1] = ""; // here we build the answer
+    char answer[searchLength + 1] = ""; // here we build the answer
     int i = -gapLength;
-    
+
     while (apiClient.connected()) {
       if (apiClient.available()) {
         char c = apiClient.read();
         Serial.print(c);
 
-        if (i>=0) {
+        if (i >= 0) {
           answer[i] = c;
         }
         i++;
-        if (i>=searchLength) {
+        if (i >= searchLength) {
           answer[searchLength] = 0;
           Serial.println();
           return answer;
@@ -325,39 +314,30 @@ unsigned long getCurrentTime() {
     // combine the four bytes (two words) into a long integer
     // this is NTP time (seconds since Jan 1 1900):
     unsigned long secsSince1900 = highWord << 16 | lowWord;
-
-    // now convert NTP time into everyday time:
-    Serial.print("Unix time = ");
     // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
     const unsigned long seventyYears = 2208988800UL;
     // subtract seventy years:
     unsigned long epoch = secsSince1900 - seventyYears;
     epoch += 3600; // UTC + 1 University of Basel, Switzerland
-    return epoch;
-    // print Unix time:
-    Serial.println(epoch);
 
-    /*
-    // print the hour, minute and second:
-    Serial.print("The UTC time is ");       // UTC is the time at Greenwich Meridian (GMT)
-    Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
-    Serial.print(':');
-    if (((epoch % 3600) / 60) < 10) {
-      // In the first 10 minutes of each hour, we'll want a leading '0'
-      Serial.print('0');
-    }
-    Serial.print((epoch  % 3600) / 60); // print the minute (3600 equals secs per minute)
-    Serial.print(':');
-    if ((epoch % 60) < 10) {
-      // In the first 10 seconds of each minute, we'll want a leading '0'
-      Serial.print('0');
-    }
-    Serial.println(epoch % 60); // print the second
-    */
+    int hour = (epoch  % 86400L) / 3600;
+    int minute = (epoch  % 3600) / 60;
+    int second = epoch % 60;
+
+    char currentTime[8];
     
+    currentTime[0] = (char) ((((hour - (hour % 10))/10) % 10) + 48);
+    currentTime[1] = (char) ((hour % 10) + 48);
+    currentTime[2] = ':';
+    currentTime[3] = (char) ((((minute - (minute % 10))/10) % 10) + 48);
+    currentTime[4] = (char) ((minute % 10) + 48);
+    currentTime[5] = ':';
+    currentTime[6] = (char) ((((second - (second % 10))/10) % 10) + 48);
+    currentTime[7] = (char) ((second % 10) + 48);
+    
+    
+    setLongText(currentTime);
   }
-  // wait ten seconds before asking for the time again
-  //delay(10000);
   Ethernet.maintain();
 }
 
