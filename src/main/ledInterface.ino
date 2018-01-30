@@ -104,7 +104,7 @@ void shiftLongTextLeft() {
 
   int endPosition = writeText(longText,longTextPosition);
   if (endPosition < 0) {
-    longTextPosition = 48;
+    longTextPosition = 46;
   }
 }
 
