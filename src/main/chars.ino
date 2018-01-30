@@ -184,6 +184,8 @@ int getCharacterWidth(char cIn) {
       return 3;
     case '<':
       return 3;
+    case '%':
+      return 4;
     // &&&&&&&&&&&&&&&&&&& other
     case '\\':
       return 4;
@@ -769,6 +771,12 @@ char* getPixelsFromChar(char cIn) {
       c[1] = 0b00010100;
       c[2] = 0b00100010;
       c[3] = 0b00000000;
+      break;
+    case '%':
+      c[0] = 0b11000011;
+      c[1] = 0b00110000;
+      c[2] = 0b00001100;
+      c[3] = 0b11000011;
       break;
     // &&&&&&&&&&&&&&&&&&& other
     case '\\':

@@ -32,8 +32,8 @@ void setup() {
   //setupLEDTest();
 
   // show movie as setup
-  int frameLength = 25;
-  int frames = 10;
+  int frameLength = 10;
+  int frames = 20+20+48;
   for (int i = 0; i < frames*frameLength; i++) {
     if (i % frameLength == 0) {
       loadNextMovieFrame();
