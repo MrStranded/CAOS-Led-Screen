@@ -56,13 +56,12 @@ int counter = 0;
 void loop() {
   drawLedScreen();
   counter++;
-  if (counter % 25 == 0) {
-    shiftLongTextLeft();
-  }
   if (counter % 200 == 0) {
     serverLoop();
   }
-  
+  if (counter % 25 == 0) {
+    shiftLongTextLeft();
+  }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%

@@ -48,18 +48,16 @@ void loadNextMovieFrame() {
 
 void setLongText(char *newText) {
   longText[LONGTEXTSIZE] = "";
-  
-  int i = 0;
-  while (newText[i] != 0) {
-    longText[i] = newText[i];
-    i++;
-    if (i >= LONGTEXTSIZE) {
-      break;
+
+  for (int i = 0; i < LONGTEXTSIZE; i++) {
+    longText[i] = 0;
+    if (newText[i] != 0) {
+      longText[i] = newText[i];
     }
   }
   longText[LONGTEXTSIZE-1] = 0;
   
-  longTextPosition = 5;
+  longTextPosition = 48;
 }
 
 // %%%%%%%%%%%%%%%%%%%%%
